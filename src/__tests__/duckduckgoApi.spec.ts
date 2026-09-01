@@ -29,7 +29,7 @@ describe('duckduckgoApi Service', () => {
       const results = await searchDuckDuckGo('Albert Einstein', '')
       expect(results.length).toBeGreaterThan(0)
       expect(results[0]?.title).toContain('Albert Einstein')
-      expect(results[0]?.link).toContain('https://en.wikipedia.org/wiki/Albert_Einstein')
+      expect(results[0]?.link).toContain('https://www.britannica.com/biography/Albert_Einstein')
     })
 
     it('successfully fetches and parses organic results from SearchApi.io', async () => {
@@ -46,11 +46,11 @@ describe('duckduckgoApi Service', () => {
           {
             position: 1,
             title: 'Albert Einstein - DuckDuckGo Result',
-            link: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+            link: 'https://www.britannica.com/biography/Albert-Einstein',
             snippet: 'Theoretical physicist who revolutionized modern physics.',
-            displayed_link: 'https://en.wikipedia.org › wiki › Albert_Einstein',
-            favicon: 'https://en.wikipedia.org/favicon.ico',
-            source: 'Wikipedia',
+            displayed_link: 'https://www.britannica.com › biography › Albert-Einstein',
+            favicon: 'https://www.britannica.com/favicon.ico',
+            source: 'Britannica',
           },
         ],
       }
@@ -63,8 +63,8 @@ describe('duckduckgoApi Service', () => {
       const results = await searchDuckDuckGo('Albert Einstein', 'valid_test_api_key')
       expect(results).toHaveLength(1)
       expect(results[0]?.title).toBe('Albert Einstein - DuckDuckGo Result')
-      expect(results[0]?.link).toBe('https://en.wikipedia.org/wiki/Albert_Einstein')
-      expect(results[0]?.source).toBe('Wikipedia')
+      expect(results[0]?.link).toBe('https://www.britannica.com/biography/Albert-Einstein')
+      expect(results[0]?.source).toBe('Britannica')
 
       expect(globalThis.fetch).toHaveBeenCalledWith(
         expect.stringContaining('engine=duckduckgo&q=Albert+Einstein&api_key=valid_test_api_key'),
@@ -121,8 +121,8 @@ describe('duckduckgoApi Service', () => {
       expect(formatDomain('https://www.britannica.com/biography/Albert-Einstein')).toBe(
         'britannica.com',
       )
-      expect(formatDomain('https://en.wikipedia.org/wiki/Albert_Einstein')).toBe(
-        'en.wikipedia.org',
+      expect(formatDomain('https://archive.org/search?query=Albert_Einstein')).toBe(
+        'archive.org',
       )
     })
 
@@ -149,7 +149,7 @@ describe('duckduckgoApi Service', () => {
       const results = generateFallbackResults('Marie Curie')
       expect(results).toHaveLength(4)
       expect(results[0]?.title).toContain('Marie Curie')
-      expect(results[0]?.link).toContain('https://en.wikipedia.org/wiki/Marie_Curie')
+      expect(results[0]?.link).toContain('https://www.britannica.com/biography/Marie_Curie')
     })
   })
 })

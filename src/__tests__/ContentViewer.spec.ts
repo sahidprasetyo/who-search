@@ -22,17 +22,17 @@ describe('ContentViewer', () => {
   it('renders iframe and title when article URL is provided', () => {
     const wrapper = mount(ContentViewer, {
       props: {
-        articleTitle: 'Albert Einstein',
-        articleUrl: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+        title: 'Albert Einstein',
+        url: 'https://www.britannica.com/biography/Albert-Einstein',
       },
     })
 
     expect(wrapper.text()).toContain('Albert Einstein')
-    expect(wrapper.text()).toContain('https://en.wikipedia.org/wiki/Albert_Einstein')
+    expect(wrapper.text()).toContain('https://www.britannica.com/biography/Albert-Einstein')
     expect(wrapper.text()).toContain('Open in New Tab')
 
     const iframe = wrapper.find('iframe')
     expect(iframe.exists()).toBe(true)
-    expect(iframe.attributes('src')).toBe('https://en.wikipedia.org/wiki/Albert_Einstein')
+    expect(iframe.attributes('src')).toBe('https://www.britannica.com/biography/Albert-Einstein')
   })
 })

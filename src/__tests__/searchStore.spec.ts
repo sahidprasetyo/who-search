@@ -28,11 +28,11 @@ describe('useSearchStore', () => {
     const mockResults: SearchResultItem[] = [
       {
         position: 1,
-        title: 'Albert Einstein - Wikipedia',
-        link: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+        title: 'Albert Einstein - World History Encyclopedia',
+        link: 'https://www.worldhistory.org/Albert_Einstein/',
         snippet: 'A renowned theoretical physicist.',
-        source: 'Wikipedia',
-        favicon: 'https://en.wikipedia.org/favicon.ico',
+        source: 'World History',
+        favicon: 'https://www.worldhistory.org/favicon.ico',
       },
       {
         position: 2,
@@ -50,9 +50,10 @@ describe('useSearchStore', () => {
 
     expect(store.isLoading).toBe(false)
     expect(store.results).toHaveLength(2)
-    expect(store.selectedResult?.title).toBe('Albert Einstein - Wikipedia')
+    expect(store.selectedResult?.title).toBe('Albert Einstein - World History Encyclopedia')
     expect(store.hasResults).toBe(true)
-    expect(store.selectedArticleUrl).toBe('https://en.wikipedia.org/wiki/Albert_Einstein')
+    expect(store.selectedTargetUrl).toBe('https://www.worldhistory.org/Albert_Einstein/')
+    expect(store.selectedArticleUrl).toBe('https://www.worldhistory.org/Albert_Einstein/')
   })
 
   it('handles error during DuckDuckGo search', async () => {

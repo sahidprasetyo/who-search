@@ -27,21 +27,21 @@ export function generateFallbackResults(query: string): SearchResultItem[] {
   return [
     {
       position: 1,
-      title: `${cleanQuery} - Wikipedia, the free encyclopedia`,
-      link: `https://en.wikipedia.org/wiki/${encodedQuery}`,
-      snippet: `${cleanQuery} was an influential figure whose pioneering work and enduring legacy reshaped modern society and history.`,
-      displayed_link: `https://en.wikipedia.org › wiki › ${encodedQuery}`,
-      favicon: 'https://en.wikipedia.org/static/favicon/wikipedia.ico',
-      source: 'Wikipedia',
-    },
-    {
-      position: 2,
       title: `${cleanQuery} | Biography, Accomplishments, & Facts | Britannica`,
       link: `https://www.britannica.com/biography/${encodedQuery}`,
       snippet: `Explore the life, major achievements, and historical context of ${cleanQuery} in this comprehensive Britannica entry.`,
       displayed_link: `https://www.britannica.com › biography › ${encodedQuery}`,
       favicon: 'https://www.britannica.com/favicon.ico',
       source: 'Britannica',
+    },
+    {
+      position: 2,
+      title: `${cleanQuery} - World History Encyclopedia`,
+      link: `https://www.worldhistory.org/search/?q=${encodedQuery}`,
+      snippet: `${cleanQuery} was an influential figure whose pioneering work and enduring legacy reshaped modern society and history.`,
+      displayed_link: `https://www.worldhistory.org › search › ${encodedQuery}`,
+      favicon: 'https://www.worldhistory.org/favicon.ico',
+      source: 'World History',
     },
     {
       position: 3,

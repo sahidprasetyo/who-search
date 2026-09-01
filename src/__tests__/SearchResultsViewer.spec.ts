@@ -12,18 +12,18 @@ describe('SearchResultsViewer', () => {
   const mockResults: SearchResultItem[] = [
     {
       position: 1,
-      title: 'Albert Einstein - Wikipedia',
-      link: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+      title: 'Albert Einstein | Biography - Britannica',
+      link: 'https://www.britannica.com/biography/Albert-Einstein',
       snippet: 'Famous theoretical physicist known for relativity.',
-      source: 'Wikipedia',
-      favicon: 'https://en.wikipedia.org/favicon.ico',
+      source: 'Britannica',
+      favicon: 'https://www.britannica.com/favicon.ico',
     },
     {
       position: 2,
-      title: 'Einstein-Szilard letter',
-      link: 'https://en.wikipedia.org/wiki/Einstein%E2%80%93Szil%C3%A1rd_letter',
+      title: 'Einstein-Szilard letter - Britannica',
+      link: 'https://www.britannica.com/topic/Einstein-Szilard-letter',
       snippet: 'Letter about atomic energy developments.',
-      source: 'Wikipedia',
+      source: 'Britannica',
     },
   ]
 
@@ -39,7 +39,7 @@ describe('SearchResultsViewer', () => {
     expect(wrapper.text()).toContain('Albert Einstein')
     expect(wrapper.text()).toContain('2 Results Found')
     expect(wrapper.text()).toContain('Einstein-Szilard letter')
-    expect(wrapper.text()).toContain('Wikipedia')
+    expect(wrapper.text()).toContain('Britannica')
   })
 
   it('renders loading skeleton when isLoading is true', () => {
@@ -84,8 +84,8 @@ describe('SearchResultsViewer', () => {
     await rows[1]?.trigger('click')
     expect(wrapper.emitted('selectResult')).toBeTruthy()
     expect(wrapper.emitted('selectResult')?.[0]?.[0]).toMatchObject({
-      title: 'Einstein-Szilard letter',
-      link: 'https://en.wikipedia.org/wiki/Einstein%E2%80%93Szil%C3%A1rd_letter',
+      title: 'Einstein-Szilard letter - Britannica',
+      link: 'https://www.britannica.com/topic/Einstein-Szilard-letter',
     })
   })
 })
