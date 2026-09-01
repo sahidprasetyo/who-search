@@ -3,10 +3,10 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-cream-paper text-charcoal flex flex-col font-sans">
+  <div class="min-h-screen bg-cream-paper text-charcoal flex flex-col font-sans selection:bg-dew-drop selection:text-charcoal">
     <!-- Header Region -->
     <header
-      class="sticky top-0 z-30 border-b-[1.5px] border-charcoal bg-cream-paper/95 backdrop-blur px-4 sm:px-6 py-3"
+      class="sticky top-0 z-30 border-b-[1.5px] border-charcoal bg-cream-paper/95 backdrop-blur-sm px-4 sm:px-6 lg:px-8 py-3.5"
     >
       <div class="mx-auto max-w-[1200px] flex items-center justify-between">
         <slot name="header" />
@@ -14,10 +14,10 @@
     </header>
 
     <!-- Main Content Body -->
-    <main class="flex-1 mx-auto w-full max-w-[1200px] p-4 sm:p-6">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+    <main class="flex-1 mx-auto w-full max-w-[1200px] p-4 sm:p-6 lg:p-8">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-start">
         <!-- Left Pane (Navigation) -->
-        <aside class="hidden md:block md:col-span-4 lg:col-span-4 sticky top-20">
+        <aside class="hidden md:block md:col-span-4 lg:col-span-4 sticky top-22">
           <slot name="navigation" />
         </aside>
 

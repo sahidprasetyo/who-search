@@ -43,9 +43,9 @@ usePersonalitiesApp()
     <!-- Footer Brand Band (Matches DESIGN.md footer token) -->
     <template #footer>
       <div
-        class="w-full bg-marker-orange text-charcoal py-4 px-6 rounded-t-[56px] mt-12 text-center"
+        class="w-full bg-marker-orange text-charcoal py-4 sm:py-5 px-4 sm:px-6 rounded-t-footer mt-12 sm:mt-16 text-center"
       >
-        <p class="text-caption font-medium">
+        <p class="text-xs sm:text-caption font-medium">
           Famous Personalities Explorer &bull; Powered by Wikipedia MediaWiki Action API &bull; Vue
           3 + Tailwind CSS v4
         </p>

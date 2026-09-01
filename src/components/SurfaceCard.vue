@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 interface Props {
   as?: string
   variant?: 'canvas' | 'tint'
@@ -20,24 +22,20 @@ const paddingClass = computed<string>(() => {
     case 'none':
       return 'p-0'
     case 'sm':
-      return 'p-3'
+      return 'p-3 sm:p-4'
     case 'lg':
-      return 'p-8'
+      return 'p-6 sm:p-8'
     case 'md':
     default:
-      return 'p-5'
+      return 'p-4 sm:p-6'
   }
 })
-</script>
-
-<script lang="ts">
-import { computed } from 'vue'
 </script>
 
 <template>
   <component
     :is="as"
-    class="rounded-[12px] border-[1.5px] border-charcoal/20 shadow-lg transition-colors"
+    class="rounded-cards border-[1.5px] border-charcoal/20 shadow-lg transition-colors overflow-hidden"
     :class="[variantClass, paddingClass]"
   >
     <div v-if="$slots.header" class="mb-3 border-b border-charcoal/10 pb-3">
