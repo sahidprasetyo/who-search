@@ -1,4 +1,4 @@
-import type { SearchApiResponse, SearchResultItem } from '@/types/search'
+import type { SearchApiResponse, SearchResultItem } from '@/types'
 import { buildUrlWithParams, formatDomain } from '@/utils/url-helpers'
 import { stripHtmlTags } from '@/utils/formatters'
 

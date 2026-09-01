@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import SearchResultsViewer from '@/components/SearchResultsViewer.vue'
-import type { SearchResultItem } from '@/types/search'
+import type { SearchResultItem } from '@/types'
 
 describe('SearchResultsViewer', () => {
   beforeEach(() => {

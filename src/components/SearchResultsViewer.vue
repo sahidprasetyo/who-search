@@ -63,10 +63,7 @@ function handleSelect(result: SearchResultItem): void {
 function handleRetry(): void {
   emit('retry')
   if (props.error === undefined && selectedPerson.value) {
-    const query =
-      selectedPerson.value.searchQuery ??
-      selectedPerson.value.wikiSearchQuery ??
-      selectedPerson.value.name
+    const query = selectedPerson.value.searchQuery || selectedPerson.value.name
     void searchStore.fetchResultsForPerson(query)
   }
 }

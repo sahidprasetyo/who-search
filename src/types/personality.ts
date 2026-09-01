@@ -4,8 +4,7 @@ export interface Person {
   id: string
   name: string
   title: string
-  searchQuery?: string
-  wikiSearchQuery: string
+  searchQuery: string
 }
 
 export interface SubCategory {

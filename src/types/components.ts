@@ -29,6 +29,8 @@ export interface CategoryAccordionEmits {
 
 // ContentViewer
 export interface ContentViewerProps {
+  title?: string
+  url?: string | null
   articleTitle?: string
   articleUrl?: string | null
 }

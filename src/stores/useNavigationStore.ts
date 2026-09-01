@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { personalitiesData } from '@/data/personalities'
-import type { Category, Person, SubCategory, SubCategoryId } from '@/types/personality'
+import type { Category, Person, SubCategory, SubCategoryId } from '@/types'
 
 interface NavigationState {
   categories: Category[]

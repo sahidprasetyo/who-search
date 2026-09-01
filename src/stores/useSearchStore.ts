@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { searchDuckDuckGo } from '@/services/duckduckgoApi'
-import type { SearchResultItem } from '@/types/search'
+import type { SearchResultItem } from '@/types'
 
 interface SearchState {
   results: SearchResultItem[]
@@ -25,6 +25,9 @@ export const useSearchStore = defineStore('search', {
 
   getters: {
     hasResults: (state): boolean => state.results.length > 0,
+    selectedTargetUrl: (state): string | null => {
+      return state.selectedResult?.link ?? null
+    },
     selectedArticleUrl: (state): string | null => {
       return state.selectedResult?.link ?? null
     },

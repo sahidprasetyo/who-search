@@ -20,7 +20,7 @@ export function usePersonalitiesApp(): {
     () => navStore.selectedPerson,
     (newPerson) => {
       if (newPerson) {
-        const query = newPerson.searchQuery ?? newPerson.wikiSearchQuery ?? newPerson.name
+        const query = newPerson.searchQuery || newPerson.name
         void searchStore.fetchResultsForPerson(query)
       } else {
         searchStore.clearSearch()
@@ -34,10 +34,7 @@ export function usePersonalitiesApp(): {
 
     // Initial fetch for the default selected person
     if (navStore.selectedPerson && searchStore.results.length === 0) {
-      const query =
-        navStore.selectedPerson.searchQuery ??
-        navStore.selectedPerson.wikiSearchQuery ??
-        navStore.selectedPerson.name
+      const query = navStore.selectedPerson.searchQuery || navStore.selectedPerson.name
       void searchStore.fetchResultsForPerson(query)
     }
   })

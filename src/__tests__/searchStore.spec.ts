@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import * as duckduckgoApi from '@/services/duckduckgoApi'
 import { useSearchStore } from '@/stores/useSearchStore'
-import type { SearchResultItem } from '@/types/search'
+import type { SearchResultItem } from '@/types'
 
 describe('useSearchStore', () => {
   beforeEach(() => {

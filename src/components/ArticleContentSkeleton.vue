@@ -31,7 +31,7 @@ import BaseSkeleton from '@/components/BaseSkeleton.vue'
         </div>
       </div>
 
-      <!-- Simulated Wikipedia Infobox Card -->
+      <!-- Simulated Profile Infobox Card -->
       <div
         class="hidden sm:flex flex-col gap-3 w-40 md:w-48 shrink-0 p-3.5 rounded-cards border border-charcoal/10 bg-dew-drop/50"
       >

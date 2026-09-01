@@ -16,12 +16,20 @@ const props = withDefaults(defineProps<ContentViewerProps>(), {
 const emit = defineEmits<ContentViewerEmits>()
 
 const searchStore = useSearchStore()
-const { selectedResult, selectedArticleUrl } = storeToRefs(searchStore)
+const { selectedResult, selectedTargetUrl } = storeToRefs(searchStore)
 
-const currentTitle = computed(() => props.articleTitle ?? selectedResult.value?.title ?? '')
-const currentUrl = computed(() =>
-  props.articleUrl !== undefined ? props.articleUrl : selectedArticleUrl.value,
+const currentTitle = computed(
+  () => props.title ?? props.articleTitle ?? selectedResult.value?.title ?? '',
 )
+const currentUrl = computed(() => {
+  if (props.url !== undefined) {
+    return props.url
+  }
+  if (props.articleUrl !== undefined) {
+    return props.articleUrl
+  }
+  return selectedTargetUrl.value
+})
 
 // Presentational iframe state encapsulated in dedicated composable
 const { isIframeLoading, handleIframeLoad } = useIframePreview(currentUrl)
@@ -147,7 +155,7 @@ function handleOpenExternal(): void {
               class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin shrink-0"
               aria-hidden="true"
             />
-            <span>Loading article content...</span>
+            <span>Loading preview content...</span>
           </div>
         </div>
 
@@ -159,7 +167,7 @@ function handleOpenExternal(): void {
       <iframe
         :key="currentUrl"
         :src="currentUrl"
-        :title="currentTitle ? `${currentTitle} Wikipedia Page` : 'Wikipedia Article'"
+        :title="currentTitle ? `${currentTitle} Preview Page` : 'Web Page Preview'"
         class="w-full h-[380px] sm:h-[460px] md:h-[540px] border-0 bg-white dark:bg-cream-paper"
         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
         loading="lazy"

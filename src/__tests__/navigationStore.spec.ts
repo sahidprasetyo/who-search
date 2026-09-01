@@ -26,7 +26,7 @@ describe('useNavigationStore', () => {
       id: 'curie',
       name: 'Marie Curie',
       title: 'Physicist',
-      wikiSearchQuery: 'Marie Curie',
+      searchQuery: 'Marie Curie',
     }
 
     store.selectPerson(newPerson, 'scientists', 'international')

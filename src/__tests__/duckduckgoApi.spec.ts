@@ -6,7 +6,7 @@ import {
   searchDuckDuckGo,
   stripHtmlTags,
 } from '@/services/duckduckgoApi'
-import type { SearchApiResponse } from '@/types/search'
+import type { SearchApiResponse } from '@/types'
 
 describe('duckduckgoApi Service', () => {
   const originalFetch = globalThis.fetch

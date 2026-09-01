@@ -1,6 +1,6 @@
 import { ref, type Ref } from 'vue'
 import { searchDuckDuckGo } from '@/services/duckduckgoApi'
-import type { SearchResultItem } from '@/types/search'
+import type { SearchResultItem } from '@/types'
 
 export interface UseDuckDuckGoSearchReturn {
   results: Ref<SearchResultItem[]>
