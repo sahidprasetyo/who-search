@@ -1,4 +1,9 @@
 import type { SearchApiResponse, SearchResultItem } from '@/types/search'
+import { buildUrlWithParams, formatDomain } from '@/utils/url-helpers'
+import { stripHtmlTags } from '@/utils/formatters'
+
+// Re-export pure helpers for convenience and backward compatibility
+export { formatDomain, stripHtmlTags }
 
 const SEARCHAPI_ENDPOINT = 'https://www.searchapi.io/api/v1/search'
 
@@ -79,13 +84,11 @@ export async function searchDuckDuckGo(
     return generateFallbackResults(trimmedQuery)
   }
 
-  const params = new URLSearchParams({
+  const url = buildUrlWithParams(SEARCHAPI_ENDPOINT, {
     engine: 'duckduckgo',
     q: trimmedQuery,
     api_key: resolvedApiKey,
   })
-
-  const url = `${SEARCHAPI_ENDPOINT}?${params.toString()}`
 
   try {
     const response = await fetch(url, { signal })
@@ -112,29 +115,4 @@ export async function searchDuckDuckGo(
     }
     throw err instanceof Error ? err : new Error('Failed to retrieve DuckDuckGo search results')
   }
-}
-
-/**
- * Extracts a readable domain hostname from a URL string.
- */
-export function formatDomain(url: string): string {
-  try {
-    const parsed = new URL(url)
-    return parsed.hostname.replace(/^www\./, '')
-  } catch {
-    return url
-  }
-}
-
-/**
- * Strips HTML tags and decodes common HTML entities.
- */
-export function stripHtmlTags(html: string): string {
-  return html
-    .replace(/<[^>]*>?/gm, '')
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&#39;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
 }

@@ -1,23 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import PillButton from '@/components/PillButton.vue'
 import SearchResultsSkeleton from '@/components/SearchResultsSkeleton.vue'
 import SurfaceCard from '@/components/SurfaceCard.vue'
-import { formatDomain, stripHtmlTags } from '@/services/duckduckgoApi'
 import { useNavigationStore } from '@/stores/useNavigationStore'
 import { useSearchStore } from '@/stores/useSearchStore'
-import type { SearchResultItem } from '@/types/search'
+import type { SearchResultItem, SearchResultsViewerEmits, SearchResultsViewerProps } from '@/types'
+import { formatDomain, stripHtmlTags } from '@/utils'
 
-interface Props {
-  results?: SearchResultItem[]
-  selectedResult?: SearchResultItem | null
-  isLoading?: boolean
-  error?: string | null
-  personName?: string
-  personTitle?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SearchResultsViewerProps>(), {
   results: undefined,
   selectedResult: undefined,
   isLoading: undefined,
@@ -26,24 +18,30 @@ const props = withDefaults(defineProps<Props>(), {
   personTitle: undefined,
 })
 
-const emit = defineEmits<{
-  selectResult: [result: SearchResultItem]
-  retry: []
-}>()
+const emit = defineEmits<SearchResultsViewerEmits>()
 
 const searchStore = useSearchStore()
 const navStore = useNavigationStore()
 
-const activeResults = computed(() => props.results ?? searchStore.results)
+// Direct reactive consumption of store state via storeToRefs (SSOT)
+const {
+  results: storeResults,
+  selectedResult: storeSelectedResult,
+  isLoading: storeIsLoading,
+  error: storeError,
+} = storeToRefs(searchStore)
+const { selectedPerson } = storeToRefs(navStore)
+
+const activeResults = computed(() => props.results ?? storeResults.value)
 const activeSelectedResult = computed(() =>
-  props.selectedResult !== undefined ? props.selectedResult : searchStore.selectedResult,
+  props.selectedResult !== undefined ? props.selectedResult : storeSelectedResult.value,
 )
-const loading = computed(() => props.isLoading ?? searchStore.isLoading)
-const errorMessage = computed(() => props.error ?? searchStore.error)
+const loading = computed(() => props.isLoading ?? storeIsLoading.value)
+const errorMessage = computed(() => props.error ?? storeError.value)
 const currentPersonName = computed(
-  () => props.personName ?? navStore.selectedPerson?.name ?? 'Famous Personality',
+  () => props.personName ?? selectedPerson.value?.name ?? 'Famous Personality',
 )
-const currentPersonTitle = computed(() => props.personTitle ?? navStore.selectedPerson?.title ?? '')
+const currentPersonTitle = computed(() => props.personTitle ?? selectedPerson.value?.title ?? '')
 
 function isResultSelected(result: SearchResultItem): boolean {
   if (!activeSelectedResult.value) {
@@ -64,11 +62,11 @@ function handleSelect(result: SearchResultItem): void {
 
 function handleRetry(): void {
   emit('retry')
-  if (props.error === undefined && navStore.selectedPerson) {
+  if (props.error === undefined && selectedPerson.value) {
     const query =
-      navStore.selectedPerson.searchQuery ??
-      navStore.selectedPerson.wikiSearchQuery ??
-      navStore.selectedPerson.name
+      selectedPerson.value.searchQuery ??
+      selectedPerson.value.wikiSearchQuery ??
+      selectedPerson.value.name
     void searchStore.fetchResultsForPerson(query)
   }
 }

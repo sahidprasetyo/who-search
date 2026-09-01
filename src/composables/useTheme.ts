@@ -1,48 +1,38 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
+import type { ThemeMode } from '@/types/theme'
+import { isSystemDarkMode, toggleHtmlClass, watchSystemDarkMode } from '@/utils/dom'
+import { getStorageItem, setStorageItem } from '@/utils/storage'
 
-export type ThemeMode = 'light' | 'dark' | 'system'
+export type { ThemeMode }
 
-const currentTheme = ref<ThemeMode>('system')
-const isDark = ref<boolean>(false)
+const THEME_STORAGE_KEY = 'who-search-theme'
+
+const currentTheme: Ref<ThemeMode> = ref<ThemeMode>('system')
+const isDark: Ref<boolean> = ref<boolean>(false)
+let isInitialized = false
+let unwatchSystem: (() => void) | null = null
 
 export function useTheme(): {
-  theme: typeof currentTheme
-  isDark: typeof isDark
+  theme: Ref<ThemeMode>
+  isDark: Ref<boolean>
   setTheme: (mode: ThemeMode) => void
   toggleTheme: () => void
   initTheme: () => void
 } {
   function updateDOM(dark: boolean): void {
     isDark.value = dark
-    if (typeof document !== 'undefined') {
-      if (dark) {
-        document.documentElement.classList.add('dark')
-        document.documentElement.classList.remove('light')
-      } else {
-        document.documentElement.classList.remove('dark')
-        document.documentElement.classList.add('light')
-      }
-    }
+    toggleHtmlClass('dark', dark)
+    toggleHtmlClass('light', !dark)
   }
 
   function setTheme(mode: ThemeMode): void {
     currentTheme.value = mode
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage.setItem('who-search-theme', mode)
-      } catch {
-        // Handle storage quota or private browsing exceptions
-      }
+    setStorageItem(THEME_STORAGE_KEY, mode)
 
-      if (mode === 'system') {
-        const systemPrefersDark =
-          typeof window.matchMedia === 'function'
-            ? window.matchMedia('(prefers-color-scheme: dark)').matches
-            : false
-        updateDOM(systemPrefersDark)
-      } else {
-        updateDOM(mode === 'dark')
-      }
+    if (mode === 'system') {
+      updateDOM(isSystemDarkMode())
+    } else {
+      updateDOM(mode === 'dark')
     }
   }
 
@@ -55,30 +45,26 @@ export function useTheme(): {
   }
 
   function initTheme(): void {
-    if (typeof window !== 'undefined') {
-      let savedTheme: ThemeMode = 'system'
-      try {
-        const stored = localStorage.getItem('who-search-theme') as ThemeMode | null
-        if (stored && ['light', 'dark', 'system'].includes(stored)) {
-          savedTheme = stored
-        }
-      } catch {
-        // Fallback to system
-      }
-
-      setTheme(savedTheme)
-
-      // Listen for OS system theme changes if matchMedia is supported
-      if (typeof window.matchMedia === 'function') {
-        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-        const listener = (event: MediaQueryListEvent): void => {
-          if (currentTheme.value === 'system') {
-            updateDOM(event.matches)
-          }
-        }
-        mediaQuery.addEventListener?.('change', listener)
-      }
+    if (isInitialized) {
+      return
     }
+    isInitialized = true
+
+    const savedTheme = getStorageItem<ThemeMode>(THEME_STORAGE_KEY, 'system')
+    const validTheme: ThemeMode = ['light', 'dark', 'system'].includes(savedTheme)
+      ? savedTheme
+      : 'system'
+
+    setTheme(validTheme)
+
+    if (unwatchSystem) {
+      unwatchSystem()
+    }
+    unwatchSystem = watchSystemDarkMode((prefersDark) => {
+      if (currentTheme.value === 'system') {
+        updateDOM(prefersDark)
+      }
+    })
   }
 
   return {

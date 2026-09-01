@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import AppHeader from '@/components/AppHeader.vue'
 import AppLayout from '@/components/AppLayout.vue'
 import CategoryAccordion from '@/components/CategoryAccordion.vue'
@@ -7,15 +6,9 @@ import ContentViewer from '@/components/ContentViewer.vue'
 import MobileDrawer from '@/components/MobileDrawer.vue'
 import SearchResultsViewer from '@/components/SearchResultsViewer.vue'
 import { usePersonalitiesApp } from '@/composables/usePersonalitiesApp'
-import { useTheme } from '@/composables/useTheme'
 
-// Reactive store coordination extracted to composable
+// Reactive store coordination and theme lifecycle managed via orchestration composable
 usePersonalitiesApp()
-
-const { initTheme } = useTheme()
-onMounted(() => {
-  initTheme()
-})
 </script>
 
 <template>

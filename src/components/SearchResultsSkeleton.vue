@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import BaseSkeleton from '@/components/BaseSkeleton.vue'
+import type { SearchResultsSkeletonProps } from '@/types'
 
-interface Props {
-  rows?: number
-}
-
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<SearchResultsSkeletonProps>(), {
   rows: 4,
 })
 

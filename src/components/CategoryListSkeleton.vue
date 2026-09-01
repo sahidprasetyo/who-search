@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import BaseSkeleton from '@/components/BaseSkeleton.vue'
+import type { CategoryListSkeletonProps } from '@/types'
 
-interface Props {
-  count?: number
-}
-
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<CategoryListSkeletonProps>(), {
   count: 3,
 })
 </script>

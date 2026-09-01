@@ -1,17 +1,10 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
  
+import type { SkeletonProps } from '@/types'
 import BaseSkeleton from './BaseSkeleton.vue'
 
-interface Props {
-  as?: string
-  width?: string
-  height?: string
-  rounded?: 'none' | 'sm' | 'inputs' | 'cards' | 'buttons' | 'tags' | 'footer' | 'full'
-  class?: string
-}
-
-const props = defineProps<Props>()
+const props = defineProps<SkeletonProps>()
 </script>
 
 <template>

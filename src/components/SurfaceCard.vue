@@ -1,13 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { SurfaceCardProps } from '@/types'
 
-interface Props {
-  as?: string
-  variant?: 'canvas' | 'tint'
-  padding?: 'none' | 'sm' | 'md' | 'lg'
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SurfaceCardProps>(), {
   as: 'div',
   variant: 'canvas',
   padding: 'md',

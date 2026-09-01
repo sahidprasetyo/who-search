@@ -3,19 +3,14 @@ import PillButton from '@/components/PillButton.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useNavigationStore } from '@/stores/useNavigationStore'
 
-interface Props {
-  title?: string
-  subtitle?: string
-}
+import type { AppHeaderEmits, AppHeaderProps } from '@/types'
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<AppHeaderProps>(), {
   title: 'Famous Personalities Explorer',
   subtitle: 'DuckDuckGo Search & Viewer',
 })
 
-const emit = defineEmits<{
-  toggleDrawer: []
-}>()
+const emit = defineEmits<AppHeaderEmits>()
 
 const navStore = useNavigationStore()
 

@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import CategoryListSkeleton from '@/components/CategoryListSkeleton.vue'
 import { useNavigationStore } from '@/stores/useNavigationStore'
-import type { Category, Person, SubCategoryId } from '@/types/personality'
+import type {
+  CategoryAccordionEmits,
+  CategoryAccordionProps,
+  Person,
+  SubCategoryId,
+} from '@/types'
 
-interface Props {
-  categories?: Category[]
-  selectedPerson?: Person | null
-  expandedCategoryIds?: string[]
-  selectedCategoryId?: string
-  selectedSubCategoryId?: SubCategoryId
-  isLoading?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<CategoryAccordionProps>(), {
   categories: undefined,
   selectedPerson: undefined,
   expandedCategoryIds: undefined,
@@ -22,24 +19,28 @@ const props = withDefaults(defineProps<Props>(), {
   isLoading: false,
 })
 
-const emit = defineEmits<{
-  selectPerson: [person: Person, categoryId: string, subCategoryId: SubCategoryId]
-  toggleCategory: [categoryId: string]
-  selectSubCategory: [categoryId: string, subCategoryId: SubCategoryId]
-}>()
+const emit = defineEmits<CategoryAccordionEmits>()
 
 const store = useNavigationStore()
 
+// Direct reactive consumption of store state via storeToRefs (SSOT)
+const {
+  categories: storeCategories,
+  selectedPerson: storeSelectedPerson,
+  expandedCategoryIds: storeExpandedCategoryIds,
+  selectedSubCategoryId: storeSelectedSubCategoryId,
+} = storeToRefs(store)
+
 // Use props if provided, otherwise fall back to store values
-const activeCategories = computed(() => props.categories ?? store.categories)
+const activeCategories = computed(() => props.categories ?? storeCategories.value)
 const activePerson = computed(() =>
-  props.selectedPerson !== undefined ? props.selectedPerson : store.selectedPerson,
+  props.selectedPerson !== undefined ? props.selectedPerson : storeSelectedPerson.value,
 )
 const currentExpandedCategoryIds = computed(
-  () => props.expandedCategoryIds ?? store.expandedCategoryIds,
+  () => props.expandedCategoryIds ?? storeExpandedCategoryIds.value,
 )
 const currentSubCategoryId = computed(
-  () => props.selectedSubCategoryId ?? store.selectedSubCategoryId,
+  () => props.selectedSubCategoryId ?? storeSelectedSubCategoryId.value,
 )
 
 function isCategoryOpen(categoryId: string): boolean {

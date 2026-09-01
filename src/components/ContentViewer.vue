@@ -1,43 +1,30 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import ArticleContentSkeleton from '@/components/ArticleContentSkeleton.vue'
 import PillButton from '@/components/PillButton.vue'
 import SurfaceCard from '@/components/SurfaceCard.vue'
+import { useIframePreview } from '@/composables/useIframePreview'
 import { useSearchStore } from '@/stores/useSearchStore'
+import type { ContentViewerEmits, ContentViewerProps } from '@/types'
 
-interface Props {
-  articleTitle?: string
-  articleUrl?: string | null
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ContentViewerProps>(), {
   articleTitle: undefined,
   articleUrl: undefined,
 })
 
-const emit = defineEmits<{
-  openExternal: [url: string]
-}>()
+const emit = defineEmits<ContentViewerEmits>()
 
 const searchStore = useSearchStore()
+const { selectedResult, selectedArticleUrl } = storeToRefs(searchStore)
 
-const currentTitle = computed(() => props.articleTitle ?? searchStore.selectedResult?.title ?? '')
+const currentTitle = computed(() => props.articleTitle ?? selectedResult.value?.title ?? '')
 const currentUrl = computed(() =>
-  props.articleUrl !== undefined ? props.articleUrl : searchStore.selectedArticleUrl,
+  props.articleUrl !== undefined ? props.articleUrl : selectedArticleUrl.value,
 )
 
-const isIframeLoading = ref<boolean>(true)
-
-// Reset iframe loading whenever the target URL changes
-watch(currentUrl, () => {
-  if (currentUrl.value) {
-    isIframeLoading.value = true
-  }
-})
-
-function handleIframeLoad(): void {
-  isIframeLoading.value = false
-}
+// Presentational iframe state encapsulated in dedicated composable
+const { isIframeLoading, handleIframeLoad } = useIframePreview(currentUrl)
 
 function handleOpenExternal(): void {
   if (currentUrl.value) {

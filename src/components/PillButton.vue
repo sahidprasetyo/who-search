@@ -1,13 +1,7 @@
 <script setup lang="ts">
-interface Props {
-  type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
-  href?: string
-  target?: string
-  rel?: string
-}
+import type { PillButtonEmits, PillButtonProps } from '@/types'
 
-withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<PillButtonProps>(), {
   type: 'button',
   disabled: false,
   href: undefined,
@@ -15,9 +9,7 @@ withDefaults(defineProps<Props>(), {
   rel: undefined,
 })
 
-const emit = defineEmits<{
-  click: [event: MouseEvent]
-}>()
+const emit = defineEmits<PillButtonEmits>()
 
 function handleClick(event: MouseEvent): void {
   emit('click', event)

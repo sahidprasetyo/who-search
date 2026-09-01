@@ -1,15 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { SkeletonProps } from '@/types'
 
-interface Props {
-  as?: string
-  width?: string
-  height?: string
-  rounded?: 'none' | 'sm' | 'inputs' | 'cards' | 'buttons' | 'tags' | 'footer' | 'full'
-  class?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SkeletonProps>(), {
   as: 'div',
   width: undefined,
   height: undefined,

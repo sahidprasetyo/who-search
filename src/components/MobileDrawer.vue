@@ -1,19 +1,21 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useNavigationStore } from '@/stores/useNavigationStore'
+import type { MobileDrawerEmits, MobileDrawerProps } from '@/types'
 
-interface Props {
-  isOpen?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<MobileDrawerProps>(), {
   isOpen: undefined,
 })
 
-const emit = defineEmits<{
-  close: []
-}>()
+const emit = defineEmits<MobileDrawerEmits>()
 
 const navStore = useNavigationStore()
+const { isMobileDrawerOpen } = storeToRefs(navStore)
+
+const activeIsOpen = computed(() =>
+  props.isOpen !== undefined ? props.isOpen : isMobileDrawerOpen.value,
+)
 
 function handleClose(): void {
   emit('close')
@@ -27,7 +29,7 @@ function handleClose(): void {
   <Teleport to="body">
     <!-- Backdrop Overlay -->
     <div
-      v-if="props.isOpen ?? navStore.isMobileDrawerOpen"
+      v-if="activeIsOpen"
       class="fixed inset-0 z-40 bg-charcoal/50 backdrop-blur-sm transition-opacity md:hidden"
       aria-hidden="true"
       @click="handleClose"
@@ -37,7 +39,7 @@ function handleClose(): void {
     <div
       class="fixed inset-y-0 left-0 z-50 w-[85vw] max-w-xs sm:max-w-sm bg-cream-paper border-r-[1.5px] border-charcoal p-4 sm:p-5 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out md:hidden"
       :class="[
-        (props.isOpen ?? navStore.isMobileDrawerOpen) ? 'translate-x-0' : '-translate-x-full',
+        activeIsOpen ? 'translate-x-0' : '-translate-x-full',
       ]"
       role="dialog"
       aria-modal="true"
