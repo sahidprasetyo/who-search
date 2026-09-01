@@ -20,7 +20,7 @@ withDefaults(defineProps<Props>(), {
     <div
       v-for="i in count"
       :key="i"
-      class="rounded-cards border-[1.5px] border-charcoal/15 bg-cream-paper shadow-sm overflow-hidden p-4"
+      class="rounded-cards border-[1.5px] border-charcoal/15 bg-cream-paper dark:bg-surface-card shadow-sm overflow-hidden p-4"
     >
       <div class="flex items-center justify-between">
         <BaseSkeleton class="h-6 w-32" rounded="inputs" />

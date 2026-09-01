@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PillButton from '@/components/PillButton.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useNavigationStore } from '@/stores/useNavigationStore'
 
 interface Props {
@@ -72,8 +73,9 @@ function handleToggle(): void {
       </div>
     </div>
 
-    <!-- Right CTA (Matches DESIGN.md Top-right Action) -->
+    <!-- Right Actions: Theme Toggle & Docs CTA -->
     <div class="flex items-center gap-2 shrink-0">
+      <ThemeToggle />
       <PillButton href="https://github.com" target="_blank" rel="noopener noreferrer">
         <span class="flex items-center gap-1.5">
           <span>Docs &amp; Code</span>

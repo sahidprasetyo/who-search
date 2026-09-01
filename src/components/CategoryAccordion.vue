@@ -78,12 +78,12 @@ function handlePersonClick(person: Person, categoryId: string, subCategoryId: Su
       <div
         v-for="category in activeCategories"
         :key="category.id"
-        class="rounded-cards border-[1.5px] border-charcoal/20 bg-cream-paper shadow-lg overflow-hidden transition-all duration-200"
+        class="rounded-cards border-[1.5px] border-charcoal/20 bg-cream-paper dark:bg-surface-card shadow-lg overflow-hidden transition-all duration-200"
       >
       <!-- Category Header Button -->
       <button
         type="button"
-        class="w-full min-h-[48px] flex items-center justify-between px-4 py-3 sm:py-3.5 text-left font-medium text-cocoa-ink hover:bg-dew-drop/50 transition-colors focus:outline-none focus:ring-2 focus:ring-charcoal/20 cursor-pointer"
+        class="w-full min-h-[48px] flex items-center justify-between px-5 py-3 sm:py-3.5 text-left font-medium text-cocoa-ink hover:bg-dew-drop/50 transition-colors focus:outline-none focus:ring-2 focus:ring-charcoal/20 cursor-pointer"
         :aria-expanded="isCategoryOpen(category.id)"
         @click="handleCategoryToggle(category.id)"
       >
@@ -110,7 +110,7 @@ function handlePersonClick(person: Person, categoryId: string, subCategoryId: Su
       <!-- Collapsible Body -->
       <div
         v-show="isCategoryOpen(category.id)"
-        class="border-t border-charcoal/10 bg-cream-paper/50 px-3 pb-3 pt-2"
+        class="border-t border-charcoal/10 bg-cream-paper/50 dark:bg-surface-card/50 px-3 pb-3 pt-2"
       >
         <!-- Sub-category Tabs (International & Indonesia) -->
         <div

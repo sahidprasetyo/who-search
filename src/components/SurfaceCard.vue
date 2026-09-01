@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const variantClass = computed<string>(() => {
-  return props.variant === 'tint' ? 'bg-dew-drop' : 'bg-cream-paper'
+  return props.variant === 'tint' ? 'bg-dew-drop' : 'bg-cream-paper dark:bg-surface-card'
 })
 
 const paddingClass = computed<string>(() => {

@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 
-@theme {
-  /* Colors */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
   --color-cream-paper: #fdfbf9;
   --color-charcoal: #171717;
   --color-cocoa-ink: #2b1a07;
@@ -13,6 +14,70 @@
   --color-bubblegum-sticker: #ff66cf;
   --color-sprout-sticker: #22c55e;
   --color-shadow-mist: #bebcbb;
+  --color-surface-canvas: #fdfbf9;
+  --color-surface-card: #fdfbf9;
+  --color-surface-tint: #f7efe9;
+  --color-surface-brand-band: #ff6f1e;
+  --shadow-lg: 0px 2px 20px 0px rgba(0, 0, 0, 0.06);
+  --shadow-subtle: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --color-cream-paper: #161514;
+    --color-charcoal: #e5dfd7;
+    --color-cocoa-ink: #f7f4ee;
+    --color-true-black: #ffffff;
+    --color-dew-drop: #282623;
+    --color-marker-orange: #ff8843;
+    --color-burnt-sienna: #f27246;
+    --color-sky-sticker: #60a5fa;
+    --color-bubblegum-sticker: #f472b6;
+    --color-sprout-sticker: #4ade80;
+    --color-shadow-mist: #0d0d0c;
+    --color-surface-canvas: #161514;
+    --color-surface-card: #1e1d1b;
+    --color-surface-tint: #282623;
+    --color-surface-brand-band: #ff6f1e;
+    --shadow-lg: 0px 4px 24px 0px rgba(0, 0, 0, 0.45);
+    --shadow-subtle: 0px 1px 3px 0px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.dark {
+  --color-cream-paper: #161514;
+  --color-charcoal: #e5dfd7;
+  --color-cocoa-ink: #f7f4ee;
+  --color-true-black: #ffffff;
+  --color-dew-drop: #282623;
+  --color-marker-orange: #ff8843;
+  --color-burnt-sienna: #f27246;
+  --color-sky-sticker: #60a5fa;
+  --color-bubblegum-sticker: #f472b6;
+  --color-sprout-sticker: #4ade80;
+  --color-shadow-mist: #0d0d0c;
+  --color-surface-canvas: #161514;
+  --color-surface-card: #1e1d1b;
+  --color-surface-tint: #282623;
+  --color-surface-brand-band: #ff6f1e;
+  --shadow-lg: 0px 4px 24px 0px rgba(0, 0, 0, 0.45);
+  --shadow-subtle: 0px 1px 3px 0px rgba(0, 0, 0, 0.6);
+}
+
+@theme {
+  /* Colors */
+  --color-cream-paper: var(--color-cream-paper);
+  --color-charcoal: var(--color-charcoal);
+  --color-cocoa-ink: var(--color-cocoa-ink);
+  --color-true-black: var(--color-true-black);
+  --color-dew-drop: var(--color-dew-drop);
+  --color-marker-orange: var(--color-marker-orange);
+  --color-burnt-sienna: var(--color-burnt-sienna);
+  --color-sky-sticker: var(--color-sky-sticker);
+  --color-bubblegum-sticker: var(--color-bubblegum-sticker);
+  --color-sprout-sticker: var(--color-sprout-sticker);
+  --color-shadow-mist: var(--color-shadow-mist);
+  --color-surface-card: var(--color-surface-card);
 
   /* Typography */
   --font-gelica:
@@ -70,13 +135,13 @@
   --radius-buttons: 20px;
 
   /* Shadows */
-  --shadow-lg: 0px 2px 20px 0px rgba(0, 0, 0, 0.06);
-  --shadow-subtle: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-subtle: var(--shadow-subtle);
 
   /* Surfaces */
-  --color-surface-canvas: #fdfbf9;
-  --color-surface-tint: #f7efe9;
-  --color-surface-brand-band: #ff6f1e;
+  --color-surface-canvas: var(--color-surface-canvas);
+  --color-surface-tint: var(--color-surface-tint);
+  --color-surface-brand-band: var(--color-surface-brand-band);
 }
 
 body {
@@ -85,4 +150,5 @@ body {
   font-family: var(--font-geist);
   margin: 0;
   min-height: 100vh;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }

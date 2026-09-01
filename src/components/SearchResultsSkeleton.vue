@@ -30,7 +30,7 @@ const snippetWidths = ['w-full', 'w-11/12', 'w-5/6', 'w-4/5']
     </div>
 
     <!-- Table Geometry Skeleton -->
-    <div class="border border-charcoal/10 rounded-cards overflow-hidden bg-cream-paper/60">
+    <div class="border border-charcoal/10 rounded-cards overflow-hidden bg-cream-paper/60 dark:bg-surface-card/60">
       <!-- Table Header Skeleton -->
       <div
         class="bg-dew-drop/90 border-b border-charcoal/15 py-2.5 px-3 sm:px-4 flex items-center justify-between gap-3"

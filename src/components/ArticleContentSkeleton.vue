@@ -4,7 +4,7 @@ import BaseSkeleton from '@/components/BaseSkeleton.vue'
 
 <template>
   <div
-    class="w-full h-full p-5 sm:p-8 flex flex-col gap-6 bg-cream-paper overflow-hidden"
+    class="w-full h-full p-5 sm:p-8 flex flex-col gap-6 bg-cream-paper dark:bg-surface-card overflow-hidden"
     aria-hidden="true"
   >
     <!-- Article Header Skeleton -->

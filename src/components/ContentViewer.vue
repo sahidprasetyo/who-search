@@ -173,7 +173,7 @@ function handleOpenExternal(): void {
         :key="currentUrl"
         :src="currentUrl"
         :title="currentTitle ? `${currentTitle} Wikipedia Page` : 'Wikipedia Article'"
-        class="w-full h-[380px] sm:h-[460px] md:h-[540px] border-0 bg-white"
+        class="w-full h-[380px] sm:h-[460px] md:h-[540px] border-0 bg-white dark:bg-cream-paper"
         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
         loading="lazy"
         @load="handleIframeLoad"
