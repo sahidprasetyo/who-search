@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import * as wikipediaApi from '@/services/wikipediaApi'
+import * as duckduckgoApi from '@/services/duckduckgoApi'
 import { useSearchStore } from '@/stores/useSearchStore'
-import type { WikiSearchResult } from '@/types/wikipedia'
+import type { SearchResultItem } from '@/types/search'
 
 describe('useSearchStore', () => {
   beforeEach(() => {
@@ -24,39 +24,40 @@ describe('useSearchStore', () => {
     expect(store.selectedArticleUrl).toBeNull()
   })
 
-  it('fetches search results and selects first article by default', async () => {
-    const mockResults: WikiSearchResult[] = [
+  it('fetches DuckDuckGo search results and selects first item by default', async () => {
+    const mockResults: SearchResultItem[] = [
       {
-        pageid: 1,
-        title: 'Albert Einstein',
-        snippet: 'A renowned physicist.',
-        timestamp: '2026-01-01',
-        wordcount: 1000,
+        position: 1,
+        title: 'Albert Einstein - Wikipedia',
+        link: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+        snippet: 'A renowned theoretical physicist.',
+        source: 'Wikipedia',
+        favicon: 'https://en.wikipedia.org/favicon.ico',
       },
       {
-        pageid: 2,
-        title: 'Einstein field equations',
-        snippet: 'General relativity equations.',
-        timestamp: '2026-01-01',
-        wordcount: 800,
+        position: 2,
+        title: 'Albert Einstein | Biography - Britannica',
+        link: 'https://www.britannica.com/biography/Albert-Einstein',
+        snippet: 'General relativity and Nobel prize winner.',
+        source: 'Britannica',
       },
     ]
 
-    vi.spyOn(wikipediaApi, 'searchWikipedia').mockResolvedValue(mockResults)
+    vi.spyOn(duckduckgoApi, 'searchDuckDuckGo').mockResolvedValue(mockResults)
 
     const store = useSearchStore()
     await store.fetchResultsForPerson('Albert Einstein')
 
     expect(store.isLoading).toBe(false)
     expect(store.results).toHaveLength(2)
-    expect(store.selectedResult?.pageid).toBe(1)
+    expect(store.selectedResult?.title).toBe('Albert Einstein - Wikipedia')
     expect(store.hasResults).toBe(true)
     expect(store.selectedArticleUrl).toBe('https://en.wikipedia.org/wiki/Albert_Einstein')
   })
 
-  it('handles error during search', async () => {
-    vi.spyOn(wikipediaApi, 'searchWikipedia').mockRejectedValue(
-      new Error('Network connection failed'),
+  it('handles error during DuckDuckGo search', async () => {
+    vi.spyOn(duckduckgoApi, 'searchDuckDuckGo').mockRejectedValue(
+      new Error('SearchApi.io network connection failed'),
     )
 
     const store = useSearchStore()
@@ -65,33 +66,31 @@ describe('useSearchStore', () => {
     expect(store.isLoading).toBe(false)
     expect(store.results).toEqual([])
     expect(store.selectedResult).toBeNull()
-    expect(store.error).toBe('Network connection failed')
+    expect(store.error).toBe('SearchApi.io network connection failed')
   })
 
-  it('allows manual selection of a specific result', () => {
+  it('allows manual selection of a specific DuckDuckGo result', () => {
     const store = useSearchStore()
-    const result: WikiSearchResult = {
-      pageid: 42,
-      title: 'Theory of Relativity',
-      snippet: 'Physics theory.',
-      timestamp: '2026-01-01',
-      wordcount: 500,
+    const result: SearchResultItem = {
+      position: 42,
+      title: 'Theory of Relativity - Britannica',
+      link: 'https://www.britannica.com/science/theory-of-relativity',
+      snippet: 'Physics theory formulation.',
     }
 
     store.selectResult(result)
-    expect(store.selectedResult?.title).toBe('Theory of Relativity')
-    expect(store.selectedArticleUrl).toBe('https://en.wikipedia.org/wiki/Theory_of_Relativity')
+    expect(store.selectedResult?.title).toBe('Theory of Relativity - Britannica')
+    expect(store.selectedArticleUrl).toBe('https://www.britannica.com/science/theory-of-relativity')
   })
 
   it('clears search state properly', () => {
     const store = useSearchStore()
     store.results = [
       {
-        pageid: 1,
+        position: 1,
         title: 'Test',
-        snippet: 'Test',
-        timestamp: '2026',
-        wordcount: 10,
+        link: 'https://example.com',
+        snippet: 'Test snippet',
       },
     ]
     store.selectedResult = store.results[0] ?? null

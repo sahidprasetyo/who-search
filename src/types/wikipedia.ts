@@ -1,9 +1,18 @@
+import type { SearchResultItem } from './search'
+
+export type { SearchResultItem }
+
 export interface WikiSearchResult {
-  pageid: number
+  pageid?: number
+  position?: number
   title: string
   snippet: string
-  timestamp: string
-  wordcount: number
+  link?: string
+  timestamp?: string
+  wordcount?: number
+  displayed_link?: string
+  favicon?: string
+  source?: string
 }
 
 export interface WikiSearchInfo {

@@ -26,12 +26,14 @@ const snippetWidths = ['w-full', 'w-11/12', 'w-5/6', 'w-4/5']
         class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin shrink-0"
         aria-hidden="true"
       />
-      <span class="font-medium">Searching Wikipedia...</span>
+      <span class="font-medium">Searching DuckDuckGo...</span>
     </div>
 
-    <!-- Table Geometry Skeleton -->
-    <div class="border border-charcoal/10 rounded-cards overflow-hidden bg-cream-paper/60 dark:bg-surface-card/60">
-      <!-- Table Header Skeleton -->
+    <!-- Table / List Geometry Skeleton -->
+    <div
+      class="border border-charcoal/10 rounded-cards overflow-hidden bg-cream-paper/60 dark:bg-surface-card/60"
+    >
+      <!-- Header Skeleton -->
       <div
         class="bg-dew-drop/90 border-b border-charcoal/15 py-2.5 px-3 sm:px-4 flex items-center justify-between gap-3"
       >
@@ -39,7 +41,7 @@ const snippetWidths = ['w-full', 'w-11/12', 'w-5/6', 'w-4/5']
           <BaseSkeleton class="w-5 h-3.5" rounded="sm" />
         </div>
         <div class="flex-1">
-          <BaseSkeleton class="w-24 h-3.5" rounded="sm" />
+          <BaseSkeleton class="w-28 h-3.5" rounded="sm" />
         </div>
         <div class="hidden md:block flex-1 max-w-xs">
           <BaseSkeleton class="w-16 h-3.5" rounded="sm" />
@@ -49,38 +51,45 @@ const snippetWidths = ['w-full', 'w-11/12', 'w-5/6', 'w-4/5']
         </div>
       </div>
 
-      <!-- Table Row Skeletons -->
+      <!-- Row Skeletons mirroring DuckDuckGo organic result geometry -->
       <div class="divide-y divide-charcoal/10">
         <div
           v-for="index in rows"
           :key="index"
-          class="py-3.5 px-3 sm:px-4 flex items-center justify-between gap-3 min-h-[52px]"
+          class="py-3.5 px-3 sm:px-4 flex items-start justify-between gap-3 min-h-[64px]"
         >
           <!-- Index Column -->
-          <div class="w-10 sm:w-12 flex justify-center">
+          <div class="w-10 sm:w-12 flex justify-center pt-1">
             <BaseSkeleton class="w-4 h-4" rounded="full" />
           </div>
 
-          <!-- Title Column -->
-          <div class="flex-1">
+          <!-- Content Column (Favicon, Domain, Title, Snippet) -->
+          <div class="flex-1 flex flex-col gap-1.5 min-w-0">
+            <!-- Favicon & Domain skeleton -->
+            <div class="flex items-center gap-2">
+              <BaseSkeleton class="w-3.5 h-3.5 shrink-0" rounded="sm" />
+              <BaseSkeleton class="w-24 h-3" rounded="sm" />
+            </div>
+
+            <!-- Title skeleton -->
             <BaseSkeleton
               class="h-4.5"
               :class="titleWidths[(index - 1) % titleWidths.length]"
               rounded="inputs"
             />
-          </div>
 
-          <!-- Snippet Column (Desktop) -->
-          <div class="hidden md:block flex-1 max-w-xs">
-            <BaseSkeleton
-              class="h-3.5"
-              :class="snippetWidths[(index - 1) % snippetWidths.length]"
-              rounded="inputs"
-            />
+            <!-- Snippet skeleton (Desktop) -->
+            <div class="hidden md:flex flex-col gap-1 pt-0.5">
+              <BaseSkeleton
+                class="h-3.5"
+                :class="snippetWidths[(index - 1) % snippetWidths.length]"
+                rounded="inputs"
+              />
+            </div>
           </div>
 
           <!-- Action Column -->
-          <div class="w-20 sm:w-28 flex justify-end">
+          <div class="w-20 sm:w-28 flex justify-end pt-1">
             <BaseSkeleton class="w-12 h-4" rounded="tags" />
           </div>
         </div>

@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue'
 import { searchDuckDuckGo } from '@/services/duckduckgoApi'
 import type { SearchResultItem } from '@/types/search'
 
-export interface UseWikipediaSearchReturn {
+export interface UseDuckDuckGoSearchReturn {
   results: Ref<SearchResultItem[]>
   isLoading: Ref<boolean>
   error: Ref<string | null>
@@ -11,10 +11,9 @@ export interface UseWikipediaSearchReturn {
 }
 
 /**
- * Legacy composable name mapped to DuckDuckGo search for backward compatibility.
- * @deprecated Use useDuckDuckGoSearch or useWebSearch instead.
+ * Composable for managing DuckDuckGo search requests via SearchApi.io with abort capability.
  */
-export function useWikipediaSearch(): UseWikipediaSearchReturn {
+export function useDuckDuckGoSearch(): UseDuckDuckGoSearchReturn {
   const results = ref<SearchResultItem[]>([])
   const isLoading = ref<boolean>(false)
   const error = ref<string | null>(null)
@@ -30,7 +29,8 @@ export function useWikipediaSearch(): UseWikipediaSearchReturn {
   async function search(query: string): Promise<SearchResultItem[]> {
     cancel()
 
-    if (!query.trim()) {
+    const trimmedQuery = query.trim()
+    if (!trimmedQuery) {
       results.value = []
       isLoading.value = false
       error.value = null
@@ -42,14 +42,15 @@ export function useWikipediaSearch(): UseWikipediaSearchReturn {
     error.value = null
 
     try {
-      const data = await searchDuckDuckGo(query, undefined, abortController.signal)
+      const data = await searchDuckDuckGo(trimmedQuery, undefined, abortController.signal)
       results.value = data
       return data
     } catch (err: unknown) {
       if (err instanceof DOMException && err.name === 'AbortError') {
         return results.value
       }
-      const message = err instanceof Error ? err.message : 'Unknown error occurred while searching'
+      const message =
+        err instanceof Error ? err.message : 'Unknown error occurred while searching DuckDuckGo'
       error.value = message
       results.value = []
       return []
@@ -66,3 +67,8 @@ export function useWikipediaSearch(): UseWikipediaSearchReturn {
     cancel,
   }
 }
+
+/**
+ * Generic alias for web search composable.
+ */
+export const useWebSearch = useDuckDuckGoSearch

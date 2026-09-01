@@ -3,14 +3,14 @@ import { computed } from 'vue'
 import PillButton from '@/components/PillButton.vue'
 import SearchResultsSkeleton from '@/components/SearchResultsSkeleton.vue'
 import SurfaceCard from '@/components/SurfaceCard.vue'
-import { stripHtmlTags } from '@/services/wikipediaApi'
+import { formatDomain, stripHtmlTags } from '@/services/duckduckgoApi'
 import { useNavigationStore } from '@/stores/useNavigationStore'
 import { useSearchStore } from '@/stores/useSearchStore'
-import type { WikiSearchResult } from '@/types/wikipedia'
+import type { SearchResultItem } from '@/types/search'
 
 interface Props {
-  results?: WikiSearchResult[]
-  selectedResult?: WikiSearchResult | null
+  results?: SearchResultItem[]
+  selectedResult?: SearchResultItem | null
   isLoading?: boolean
   error?: string | null
   personName?: string
@@ -27,7 +27,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  selectResult: [result: WikiSearchResult]
+  selectResult: [result: SearchResultItem]
   retry: []
 }>()
 
@@ -45,7 +45,17 @@ const currentPersonName = computed(
 )
 const currentPersonTitle = computed(() => props.personTitle ?? navStore.selectedPerson?.title ?? '')
 
-function handleSelect(result: WikiSearchResult): void {
+function isResultSelected(result: SearchResultItem): boolean {
+  if (!activeSelectedResult.value) {
+    return false
+  }
+  if (result.link && activeSelectedResult.value.link) {
+    return result.link === activeSelectedResult.value.link
+  }
+  return result.title === activeSelectedResult.value.title
+}
+
+function handleSelect(result: SearchResultItem): void {
   emit('selectResult', result)
   if (props.selectedResult === undefined) {
     searchStore.selectResult(result)
@@ -55,7 +65,11 @@ function handleSelect(result: WikiSearchResult): void {
 function handleRetry(): void {
   emit('retry')
   if (props.error === undefined && navStore.selectedPerson) {
-    void searchStore.fetchResultsForPerson(navStore.selectedPerson.wikiSearchQuery)
+    const query =
+      navStore.selectedPerson.searchQuery ??
+      navStore.selectedPerson.wikiSearchQuery ??
+      navStore.selectedPerson.name
+    void searchStore.fetchResultsForPerson(query)
   }
 }
 </script>
@@ -82,12 +96,14 @@ function handleRetry(): void {
           </p>
         </div>
 
-        <span
-          v-if="!loading && activeResults.length > 0"
-          class="inline-flex items-center self-start sm:self-auto rounded-tags bg-dew-drop border border-charcoal/20 px-3 py-1 text-caption text-charcoal/80 font-medium shrink-0"
-        >
-          {{ activeResults.length }} Articles Found
-        </span>
+        <div class="flex items-center gap-2 shrink-0">
+          <span
+            v-if="!loading && activeResults.length > 0"
+            class="inline-flex items-center self-start sm:self-auto rounded-tags bg-dew-drop border border-charcoal/20 px-3 py-1 text-caption text-charcoal/80 font-medium"
+          >
+            {{ activeResults.length }} Results Found
+          </span>
+        </div>
       </div>
     </template>
 
@@ -108,11 +124,11 @@ function handleRetry(): void {
 
     <!-- Empty State -->
     <div v-else-if="activeResults.length === 0" class="p-8 text-center text-charcoal/60">
-      <p class="text-body-sm">No articles found on Wikipedia for this person.</p>
+      <p class="text-body-sm">No search results found on DuckDuckGo for this person.</p>
     </div>
 
     <!-- Results Table / List (Single-axis scroll with overscroll-contain) -->
-    <div v-else class="max-h-[320px] sm:max-h-[360px] overflow-y-auto overscroll-contain">
+    <div v-else class="max-h-[340px] sm:max-h-[380px] overflow-y-auto overscroll-contain">
       <table class="w-full text-left text-body-sm border-collapse">
         <thead
           class="sticky top-0 bg-dew-drop/95 backdrop-blur-sm z-10 border-b border-charcoal/15 text-caption uppercase text-charcoal/70"
@@ -122,53 +138,73 @@ function handleRetry(): void {
               No.
             </th>
             <th scope="col" class="py-2.5 px-3 sm:px-4 font-medium">
-              Article Title
+              DuckDuckGo Search Result
             </th>
             <th scope="col" class="py-2.5 px-4 hidden md:table-cell font-medium">
               Snippet
             </th>
             <th scope="col" class="py-2.5 px-3 sm:px-4 w-20 sm:w-28 text-right font-medium">
-              Action
+              Preview
             </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-charcoal/10">
           <tr
             v-for="(result, index) in activeResults"
-            :key="result.pageid"
+            :key="result.link || index"
             class="group cursor-pointer transition-colors"
             :class="[
-              activeSelectedResult?.pageid === result.pageid
+              isResultSelected(result)
                 ? 'bg-dew-drop font-medium border-l-4 border-l-marker-orange'
                 : 'hover:bg-dew-drop/40 border-l-4 border-l-transparent',
             ]"
             @click="handleSelect(result)"
           >
             <!-- Index -->
-            <td class="py-3 sm:py-3 px-3 sm:px-4 text-center text-caption text-charcoal/70">
-              {{ index + 1 }}
+            <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-center text-caption text-charcoal/70 align-top">
+              {{ result.position ?? index + 1 }}
             </td>
 
-            <!-- Title -->
-            <td class="py-3 sm:py-3 px-3 sm:px-4 font-medium text-cocoa-ink">
-              <div class="line-clamp-1">
-                {{ result.title }}
+            <!-- Result Title & Favicon/Domain -->
+            <td class="py-3.5 sm:py-3 px-3 sm:px-4 align-top">
+              <div class="flex flex-col gap-1 min-w-0">
+                <!-- Favicon & Source Domain -->
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <img
+                    v-if="result.favicon"
+                    :src="result.favicon"
+                    alt=""
+                    class="w-3.5 h-3.5 rounded-sm object-contain shrink-0"
+                    loading="lazy"
+                    @error="($event.target as HTMLElement).style.display = 'none'"
+                  />
+                  <span class="text-xs text-charcoal/60 font-mono truncate">
+                    {{ result.source || result.displayed_link || formatDomain(result.link) }}
+                  </span>
+                </div>
+
+                <!-- Title -->
+                <div
+                  class="font-medium text-cocoa-ink line-clamp-1 group-hover:text-marker-orange transition-colors"
+                >
+                  {{ result.title }}
+                </div>
               </div>
             </td>
 
             <!-- Snippet Preview -->
-            <td class="py-3 sm:py-3 px-4 hidden md:table-cell text-caption text-charcoal/70">
-              <div class="line-clamp-1">
+            <td class="py-3.5 sm:py-3 px-4 hidden md:table-cell text-caption text-charcoal/70 align-top">
+              <div class="line-clamp-2">
                 {{ stripHtmlTags(result.snippet) }}
               </div>
             </td>
 
             <!-- Action -->
-            <td class="py-3 sm:py-3 px-3 sm:px-4 text-right">
+            <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-right align-top">
               <span
                 class="inline-flex items-center text-caption transition-colors font-medium"
                 :class="[
-                  activeSelectedResult?.pageid === result.pageid
+                  isResultSelected(result)
                     ? 'text-marker-orange font-semibold'
                     : 'text-charcoal/60 group-hover:text-charcoal',
                 ]"

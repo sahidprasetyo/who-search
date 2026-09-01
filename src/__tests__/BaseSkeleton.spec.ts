@@ -60,7 +60,7 @@ describe('SearchResultsSkeleton Component', () => {
 
     expect(wrapper.attributes('aria-busy')).toBe('true')
     expect(wrapper.attributes('aria-live')).toBe('polite')
-    expect(wrapper.text()).toContain('Searching Wikipedia...')
+    expect(wrapper.text()).toContain('Searching DuckDuckGo...')
     // 5 rows in the body
     const rows = wrapper.findAll('.divide-y > div')
     expect(rows).toHaveLength(5)

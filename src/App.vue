@@ -53,8 +53,8 @@ onMounted(() => {
         class="w-full bg-marker-orange text-charcoal py-4 sm:py-5 px-4 sm:px-6 rounded-t-footer mt-12 sm:mt-16 text-center"
       >
         <p class="text-xs sm:text-caption font-medium">
-          Famous Personalities Explorer &bull; Powered by Wikipedia MediaWiki Action API &bull; Vue
-          3 + Tailwind CSS v4
+          Famous Personalities Explorer &bull; Powered by DuckDuckGo Search via SearchApi.io &bull;
+          Vue 3 + Tailwind CSS v4
         </p>
       </div>
     </template>

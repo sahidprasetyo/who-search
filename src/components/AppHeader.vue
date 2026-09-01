@@ -10,7 +10,7 @@ interface Props {
 
 withDefaults(defineProps<Props>(), {
   title: 'Famous Personalities Explorer',
-  subtitle: 'Wikipedia Search & Viewer',
+  subtitle: 'DuckDuckGo Search & Viewer',
 })
 
 const emit = defineEmits<{

@@ -2,27 +2,28 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import SearchResultsViewer from '@/components/SearchResultsViewer.vue'
-import type { WikiSearchResult } from '@/types/wikipedia'
+import type { SearchResultItem } from '@/types/search'
 
 describe('SearchResultsViewer', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
   })
 
-  const mockResults: WikiSearchResult[] = [
+  const mockResults: SearchResultItem[] = [
     {
-      pageid: 101,
-      title: 'Albert Einstein',
-      snippet: 'Famous theoretical physicist',
-      timestamp: '2026-01-01',
-      wordcount: 2000,
+      position: 1,
+      title: 'Albert Einstein - Wikipedia',
+      link: 'https://en.wikipedia.org/wiki/Albert_Einstein',
+      snippet: 'Famous theoretical physicist known for relativity.',
+      source: 'Wikipedia',
+      favicon: 'https://en.wikipedia.org/favicon.ico',
     },
     {
-      pageid: 102,
+      position: 2,
       title: 'Einstein-Szilard letter',
-      snippet: 'Letter about atomic bomb',
-      timestamp: '2026-01-01',
-      wordcount: 1200,
+      link: 'https://en.wikipedia.org/wiki/Einstein%E2%80%93Szil%C3%A1rd_letter',
+      snippet: 'Letter about atomic energy developments.',
+      source: 'Wikipedia',
     },
   ]
 
@@ -36,8 +37,9 @@ describe('SearchResultsViewer', () => {
     })
 
     expect(wrapper.text()).toContain('Albert Einstein')
-    expect(wrapper.text()).toContain('2 Articles Found')
+    expect(wrapper.text()).toContain('2 Results Found')
     expect(wrapper.text()).toContain('Einstein-Szilard letter')
+    expect(wrapper.text()).toContain('Wikipedia')
   })
 
   it('renders loading skeleton when isLoading is true', () => {
@@ -48,7 +50,7 @@ describe('SearchResultsViewer', () => {
       },
     })
 
-    expect(wrapper.text()).toContain('Searching Wikipedia...')
+    expect(wrapper.text()).toContain('Searching DuckDuckGo...')
     expect(wrapper.find('[aria-busy="true"]').exists()).toBe(true)
   })
 
@@ -82,8 +84,8 @@ describe('SearchResultsViewer', () => {
     await rows[1]?.trigger('click')
     expect(wrapper.emitted('selectResult')).toBeTruthy()
     expect(wrapper.emitted('selectResult')?.[0]?.[0]).toMatchObject({
-      pageid: 102,
       title: 'Einstein-Szilard letter',
+      link: 'https://en.wikipedia.org/wiki/Einstein%E2%80%93Szil%C3%A1rd_letter',
     })
   })
 })
