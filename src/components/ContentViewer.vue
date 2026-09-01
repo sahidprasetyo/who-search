@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
+import ArticleContentSkeleton from '@/components/ArticleContentSkeleton.vue'
 import PillButton from '@/components/PillButton.vue'
 import SurfaceCard from '@/components/SurfaceCard.vue'
 import { useSearchStore } from '@/stores/useSearchStore'
@@ -50,19 +51,22 @@ function handleOpenExternal(): void {
     <!-- Header -->
     <template #header>
       <div
-        class="px-5 pt-3 pb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+        class="px-4 sm:px-6 pt-3.5 pb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5"
       >
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2">
             <span
-              class="inline-block w-2.5 h-2.5 rounded-full bg-sprout-sticker"
+              class="inline-block w-2.5 h-2.5 rounded-full bg-sprout-sticker shrink-0"
               aria-hidden="true"
             />
-            <h3 class="text-subheading font-semibold text-cocoa-ink truncate">
+            <h3 class="text-body sm:text-subheading font-semibold text-cocoa-ink truncate">
               {{ currentTitle || 'Article Preview' }}
             </h3>
           </div>
-          <p v-if="currentUrl" class="text-caption text-charcoal/60 truncate mt-0.5 font-mono">
+          <p
+            v-if="currentUrl"
+            class="text-xs sm:text-caption text-charcoal/60 truncate mt-0.5 font-mono"
+          >
             {{ currentUrl }}
           </p>
         </div>
@@ -99,7 +103,7 @@ function handleOpenExternal(): void {
     <!-- Empty State -->
     <div
       v-if="!currentUrl"
-      class="h-96 flex flex-col items-center justify-center p-8 text-center text-charcoal/60"
+      class="h-72 sm:h-84 md:h-96 flex flex-col items-center justify-center p-6 sm:p-8 text-center text-charcoal/60"
     >
       <svg
         class="w-12 h-12 mb-3 text-charcoal/30"
@@ -115,18 +119,18 @@ function handleOpenExternal(): void {
           d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
         />
       </svg>
-      <p class="text-body-sm font-medium">
+      <p class="text-body-sm font-medium max-w-sm">
         Select a search result from above to preview the article.
       </p>
     </div>
 
     <!-- Active Iframe Container -->
-    <div v-else class="relative w-full">
+    <div v-else class="relative w-full overscroll-contain">
       <!-- Fallback Info Notice Banner (for iframe embedding edge cases) -->
       <div
-        class="px-4 py-2 bg-dew-drop/90 border-b border-charcoal/10 flex items-center justify-between text-caption text-charcoal/80"
+        class="px-4 sm:px-6 py-2 bg-dew-drop/90 border-b border-charcoal/10 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-caption text-charcoal/80"
       >
-        <span class="flex items-center gap-1.5">
+        <span class="flex items-center gap-1.5 text-xs sm:text-caption">
           <span class="text-marker-orange font-bold">Note:</span>
           If preview does not load due to site security headers, use "Open in New Tab".
         </span>
@@ -134,35 +138,42 @@ function handleOpenExternal(): void {
           :href="currentUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="font-medium text-marker-orange hover:underline shrink-0 ml-2"
+          class="text-xs sm:text-caption font-medium text-marker-orange hover:underline shrink-0"
         >
           Open direct link &rarr;
         </a>
       </div>
 
-      <!-- Iframe Spinner Overlay -->
+      <!-- Iframe Loading Overlay with Article Skeleton Preview -->
       <div
         v-if="isIframeLoading"
-        class="absolute inset-0 top-10 bg-cream-paper/80 backdrop-blur-xs flex items-center justify-center z-10"
+        class="absolute inset-0 top-10 bg-cream-paper z-10 flex flex-col justify-start overflow-hidden"
         aria-busy="true"
         aria-live="polite"
       >
-        <div
-          class="flex items-center gap-2 text-caption text-charcoal/70 bg-cream-paper px-4 py-2 rounded-full border border-charcoal/20 shadow-sm"
-        >
-          <span
-            class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin"
-          />
-          Loading article content...
+        <!-- Floating loading pill -->
+        <div class="absolute inset-x-0 top-6 flex justify-center z-20 pointer-events-none">
+          <div
+            class="flex items-center gap-2 text-caption text-charcoal/70 bg-cream-paper/95 backdrop-blur-sm px-4 py-2 rounded-buttons border border-charcoal/20 shadow-subtle"
+          >
+            <span
+              class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin shrink-0"
+              aria-hidden="true"
+            />
+            <span>Loading article content...</span>
+          </div>
         </div>
+
+        <!-- Geometric layout skeleton -->
+        <ArticleContentSkeleton />
       </div>
 
-      <!-- Iframe Content -->
+      <!-- Iframe Content with responsive height -->
       <iframe
         :key="currentUrl"
         :src="currentUrl"
         :title="currentTitle ? `${currentTitle} Wikipedia Page` : 'Wikipedia Article'"
-        class="w-full h-[520px] border-0 bg-white"
+        class="w-full h-[380px] sm:h-[460px] md:h-[540px] border-0 bg-white"
         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
         loading="lazy"
         @load="handleIframeLoad"

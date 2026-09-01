@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import PillButton from '@/components/PillButton.vue'
+import SearchResultsSkeleton from '@/components/SearchResultsSkeleton.vue'
 import SurfaceCard from '@/components/SurfaceCard.vue'
 import { stripHtmlTags } from '@/services/wikipediaApi'
 import { useNavigationStore } from '@/stores/useNavigationStore'
@@ -64,26 +65,26 @@ function handleRetry(): void {
     <!-- Card Header -->
     <template #header>
       <div
-        class="px-5 pt-3 pb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+        class="px-4 sm:px-6 pt-3.5 pb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5"
       >
-        <div>
+        <div class="min-w-0">
           <div class="flex items-center gap-2">
             <span
-              class="inline-block w-2.5 h-2.5 rounded-full bg-marker-orange"
+              class="inline-block w-2.5 h-2.5 rounded-full bg-marker-orange shrink-0"
               aria-hidden="true"
             />
-            <h2 class="text-subheading font-semibold text-cocoa-ink">
+            <h2 class="text-body sm:text-subheading font-semibold text-cocoa-ink truncate">
               {{ currentPersonName }}
             </h2>
           </div>
-          <p v-if="currentPersonTitle" class="text-caption text-charcoal/60 mt-0.5">
+          <p v-if="currentPersonTitle" class="text-caption text-charcoal/60 mt-0.5 truncate">
             {{ currentPersonTitle }}
           </p>
         </div>
 
         <span
           v-if="!loading && activeResults.length > 0"
-          class="inline-flex items-center self-start sm:self-auto rounded-[20px] bg-dew-drop border border-charcoal/20 px-3 py-1 text-caption text-charcoal/80 font-medium"
+          class="inline-flex items-center self-start sm:self-auto rounded-tags bg-dew-drop border border-charcoal/20 px-3 py-1 text-caption text-charcoal/80 font-medium shrink-0"
         >
           {{ activeResults.length }} Articles Found
         </span>
@@ -91,19 +92,7 @@ function handleRetry(): void {
     </template>
 
     <!-- Loading Skeleton State -->
-    <div v-if="loading" class="p-5 flex flex-col gap-3" aria-busy="true" aria-live="polite">
-      <div class="flex items-center gap-3 text-caption text-charcoal/60 mb-2">
-        <span
-          class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin"
-        />
-        Searching Wikipedia...
-      </div>
-      <div
-        v-for="index in 4"
-        :key="index"
-        class="h-16 rounded-[8px] bg-dew-drop/60 animate-pulse border border-charcoal/5"
-      />
-    </div>
+    <SearchResultsSkeleton v-if="loading" />
 
     <!-- Error State -->
     <div
@@ -122,17 +111,25 @@ function handleRetry(): void {
       <p class="text-body-sm">No articles found on Wikipedia for this person.</p>
     </div>
 
-    <!-- Results Table / List -->
-    <div v-else class="overflow-x-auto max-h-[320px] overflow-y-auto">
+    <!-- Results Table / List (Single-axis scroll with overscroll-contain) -->
+    <div v-else class="max-h-[320px] sm:max-h-[360px] overflow-y-auto overscroll-contain">
       <table class="w-full text-left text-body-sm border-collapse">
         <thead
-          class="sticky top-0 bg-dew-drop/90 backdrop-blur z-10 border-b border-charcoal/15 text-caption uppercase text-charcoal/70"
+          class="sticky top-0 bg-dew-drop/95 backdrop-blur-sm z-10 border-b border-charcoal/15 text-caption uppercase text-charcoal/70"
         >
           <tr>
-            <th scope="col" class="py-2.5 px-4 w-12 text-center font-medium">No.</th>
-            <th scope="col" class="py-2.5 px-4 font-medium">Article Title</th>
-            <th scope="col" class="py-2.5 px-4 hidden md:table-cell font-medium">Snippet</th>
-            <th scope="col" class="py-2.5 px-4 w-28 text-right font-medium">Action</th>
+            <th scope="col" class="py-2.5 px-3 sm:px-4 w-10 sm:w-12 text-center font-medium">
+              No.
+            </th>
+            <th scope="col" class="py-2.5 px-3 sm:px-4 font-medium">
+              Article Title
+            </th>
+            <th scope="col" class="py-2.5 px-4 hidden md:table-cell font-medium">
+              Snippet
+            </th>
+            <th scope="col" class="py-2.5 px-3 sm:px-4 w-20 sm:w-28 text-right font-medium">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody class="divide-y divide-charcoal/10">
@@ -148,28 +145,28 @@ function handleRetry(): void {
             @click="handleSelect(result)"
           >
             <!-- Index -->
-            <td class="py-3 px-4 text-center text-caption text-charcoal/70">
+            <td class="py-3 sm:py-3 px-3 sm:px-4 text-center text-caption text-charcoal/70">
               {{ index + 1 }}
             </td>
 
             <!-- Title -->
-            <td class="py-3 px-4 font-medium text-cocoa-ink">
+            <td class="py-3 sm:py-3 px-3 sm:px-4 font-medium text-cocoa-ink">
               <div class="line-clamp-1">
                 {{ result.title }}
               </div>
             </td>
 
             <!-- Snippet Preview -->
-            <td class="py-3 px-4 hidden md:table-cell text-caption text-charcoal/70">
+            <td class="py-3 sm:py-3 px-4 hidden md:table-cell text-caption text-charcoal/70">
               <div class="line-clamp-1">
                 {{ stripHtmlTags(result.snippet) }}
               </div>
             </td>
 
             <!-- Action -->
-            <td class="py-3 px-4 text-right">
+            <td class="py-3 sm:py-3 px-3 sm:px-4 text-right">
               <span
-                class="inline-flex items-center text-caption transition-colors"
+                class="inline-flex items-center text-caption transition-colors font-medium"
                 :class="[
                   activeSelectedResult?.pageid === result.pageid
                     ? 'text-marker-orange font-semibold'
