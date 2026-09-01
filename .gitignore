@@ -14,9 +14,10 @@ dist-ssr
 coverage
 *.local
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+# Editor & AI directories and files
+.vscode
+.agents
+.claude
 .idea
 *.suo
 *.ntvs*
@@ -38,9 +39,6 @@ __screenshots__/
 # Vite
 *.timestamp-*-*.mjs
 
-# AI
+# AI & Tooling
 docs/
-.vscode
-.agents/
-.claude/
 skills-lock.json
