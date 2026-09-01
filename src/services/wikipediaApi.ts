@@ -62,5 +62,8 @@ export function getWikipediaArticleUrl(title: string): string {
  * Helper to strip HTML tags from Wikipedia snippets safely.
  */
 export function stripHtmlTags(html: string): string {
-  return html.replace(/<[^>]*>?/gm, '').replace(/&quot;/g, '"').replace(/&amp;/g, '&')
+  return html
+    .replace(/<[^>]*>?/gm, '')
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
 }

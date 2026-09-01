@@ -29,9 +29,15 @@ const store = useNavigationStore()
 
 // Use props if provided, otherwise fall back to store values
 const activeCategories = computed(() => props.categories ?? store.categories)
-const activePerson = computed(() => (props.selectedPerson !== undefined ? props.selectedPerson : store.selectedPerson))
-const currentExpandedCategoryIds = computed(() => props.expandedCategoryIds ?? store.expandedCategoryIds)
-const currentSubCategoryId = computed(() => props.selectedSubCategoryId ?? store.selectedSubCategoryId)
+const activePerson = computed(() =>
+  props.selectedPerson !== undefined ? props.selectedPerson : store.selectedPerson,
+)
+const currentExpandedCategoryIds = computed(
+  () => props.expandedCategoryIds ?? store.expandedCategoryIds,
+)
+const currentSubCategoryId = computed(
+  () => props.selectedSubCategoryId ?? store.selectedSubCategoryId,
+)
 
 function isCategoryOpen(categoryId: string): boolean {
   return currentExpandedCategoryIds.value.includes(categoryId)
@@ -84,14 +90,24 @@ function handlePersonClick(person: Person, categoryId: string, subCategoryId: Su
           viewBox="0 0 24 24"
           aria-hidden="true"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
       <!-- Collapsible Body -->
-      <div v-show="isCategoryOpen(category.id)" class="border-t border-charcoal/10 bg-cream-paper/50 px-3 pb-3 pt-2">
+      <div
+        v-show="isCategoryOpen(category.id)"
+        class="border-t border-charcoal/10 bg-cream-paper/50 px-3 pb-3 pt-2"
+      >
         <!-- Sub-category Tabs (International & Indonesia) -->
-        <div class="flex items-center gap-1.5 p-1 mb-2.5 rounded-[20px] bg-dew-drop/80 border border-charcoal/10">
+        <div
+          class="flex items-center gap-1.5 p-1 mb-2.5 rounded-[20px] bg-dew-drop/80 border border-charcoal/10"
+        >
           <button
             v-for="subCategory in category.subCategories"
             :key="subCategory.id"
@@ -128,7 +144,11 @@ function handlePersonClick(person: Person, categoryId: string, subCategoryId: Su
                 <div class="flex items-center justify-between w-full">
                   <span
                     class="text-body-sm font-medium transition-colors"
-                    :class="activePerson?.id === person.id ? 'text-charcoal font-semibold' : 'text-charcoal/90'"
+                    :class="
+                      activePerson?.id === person.id
+                        ? 'text-charcoal font-semibold'
+                        : 'text-charcoal/90'
+                    "
                   >
                     {{ person.name }}
                   </span>

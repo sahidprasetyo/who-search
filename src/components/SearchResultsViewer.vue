@@ -34,17 +34,15 @@ const searchStore = useSearchStore()
 const navStore = useNavigationStore()
 
 const activeResults = computed(() => props.results ?? searchStore.results)
-const activeSelectedResult = computed(
-  () => (props.selectedResult !== undefined ? props.selectedResult : searchStore.selectedResult),
+const activeSelectedResult = computed(() =>
+  props.selectedResult !== undefined ? props.selectedResult : searchStore.selectedResult,
 )
 const loading = computed(() => props.isLoading ?? searchStore.isLoading)
 const errorMessage = computed(() => props.error ?? searchStore.error)
 const currentPersonName = computed(
   () => props.personName ?? navStore.selectedPerson?.name ?? 'Famous Personality',
 )
-const currentPersonTitle = computed(
-  () => props.personTitle ?? navStore.selectedPerson?.title ?? '',
-)
+const currentPersonTitle = computed(() => props.personTitle ?? navStore.selectedPerson?.title ?? '')
 
 function handleSelect(result: WikiSearchResult): void {
   emit('selectResult', result)
@@ -65,10 +63,15 @@ function handleRetry(): void {
   <SurfaceCard variant="canvas" padding="none">
     <!-- Card Header -->
     <template #header>
-      <div class="px-5 pt-3 pb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div
+        class="px-5 pt-3 pb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+      >
         <div>
           <div class="flex items-center gap-2">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-marker-orange" aria-hidden="true" />
+            <span
+              class="inline-block w-2.5 h-2.5 rounded-full bg-marker-orange"
+              aria-hidden="true"
+            />
             <h2 class="text-subheading font-semibold text-cocoa-ink">
               {{ currentPersonName }}
             </h2>
@@ -90,7 +93,9 @@ function handleRetry(): void {
     <!-- Loading Skeleton State -->
     <div v-if="loading" class="p-5 flex flex-col gap-3" aria-busy="true" aria-live="polite">
       <div class="flex items-center gap-3 text-caption text-charcoal/60 mb-2">
-        <span class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin" />
+        <span
+          class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin"
+        />
         Searching Wikipedia...
       </div>
       <div
@@ -109,25 +114,20 @@ function handleRetry(): void {
       <p class="text-body-sm font-medium text-burnt-sienna">
         {{ errorMessage }}
       </p>
-      <PillButton type="button" @click="handleRetry">
-        Try Again
-      </PillButton>
+      <PillButton type="button" @click="handleRetry"> Try Again </PillButton>
     </div>
 
     <!-- Empty State -->
-    <div
-      v-else-if="activeResults.length === 0"
-      class="p-8 text-center text-charcoal/60"
-    >
-      <p class="text-body-sm">
-        No articles found on Wikipedia for this person.
-      </p>
+    <div v-else-if="activeResults.length === 0" class="p-8 text-center text-charcoal/60">
+      <p class="text-body-sm">No articles found on Wikipedia for this person.</p>
     </div>
 
     <!-- Results Table / List -->
     <div v-else class="overflow-x-auto max-h-[320px] overflow-y-auto">
       <table class="w-full text-left text-body-sm border-collapse">
-        <thead class="sticky top-0 bg-dew-drop/90 backdrop-blur z-10 border-b border-charcoal/15 text-caption uppercase text-charcoal/70">
+        <thead
+          class="sticky top-0 bg-dew-drop/90 backdrop-blur z-10 border-b border-charcoal/15 text-caption uppercase text-charcoal/70"
+        >
           <tr>
             <th scope="col" class="py-2.5 px-4 w-12 text-center font-medium">No.</th>
             <th scope="col" class="py-2.5 px-4 font-medium">Article Title</th>

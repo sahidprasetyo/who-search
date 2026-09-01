@@ -35,14 +35,27 @@ function handleToggle(): void {
         aria-label="Toggle navigation categories"
         @click="handleToggle"
       >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
         </svg>
       </button>
 
       <!-- Brand Mark -->
       <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-full bg-charcoal text-cream-paper flex items-center justify-center text-body-sm font-bold shadow-subtle">
+        <div
+          class="w-8 h-8 rounded-full bg-charcoal text-cream-paper flex items-center justify-center text-body-sm font-bold shadow-subtle"
+        >
           &#10022;
         </div>
         <div>
@@ -58,11 +71,7 @@ function handleToggle(): void {
 
     <!-- Right CTA (Matches DESIGN.md Top-right Action) -->
     <div class="flex items-center gap-2">
-      <PillButton
-        href="https://github.com"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <PillButton href="https://github.com" target="_blank" rel="noopener noreferrer">
         <span>Docs & Code</span>
       </PillButton>
     </div>

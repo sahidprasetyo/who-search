@@ -1,9 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import {
-  getWikipediaArticleUrl,
-  searchWikipedia,
-  stripHtmlTags,
-} from '@/services/wikipediaApi'
+import { getWikipediaArticleUrl, searchWikipedia, stripHtmlTags } from '@/services/wikipediaApi'
 import type { WikiSearchResponse } from '@/types/wikipedia'
 
 describe('wikipediaApi', () => {
@@ -30,7 +26,8 @@ describe('wikipediaApi', () => {
             {
               pageid: 1234,
               title: 'Albert Einstein',
-              snippet: 'Physicist who developed the <span class="searchmatch">theory</span> of relativity.',
+              snippet:
+                'Physicist who developed the <span class="searchmatch">theory</span> of relativity.',
               timestamp: '2026-01-01T00:00:00Z',
               wordcount: 5000,
             },
@@ -104,7 +101,8 @@ describe('wikipediaApi', () => {
 
   describe('stripHtmlTags', () => {
     it('removes HTML tags and decodes common HTML entities', () => {
-      const input = 'Famous for <span class="searchmatch">relativity</span> &amp; &quot;genius&quot;'
+      const input =
+        'Famous for <span class="searchmatch">relativity</span> &amp; &quot;genius&quot;'
       const output = stripHtmlTags(input)
       expect(output).toBe('Famous for relativity & "genius"')
     })

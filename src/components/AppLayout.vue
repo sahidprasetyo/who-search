@@ -5,7 +5,9 @@
 <template>
   <div class="min-h-screen bg-cream-paper text-charcoal flex flex-col font-sans">
     <!-- Header Region -->
-    <header class="sticky top-0 z-30 border-b-[1.5px] border-charcoal bg-cream-paper/95 backdrop-blur px-4 sm:px-6 py-3">
+    <header
+      class="sticky top-0 z-30 border-b-[1.5px] border-charcoal bg-cream-paper/95 backdrop-blur px-4 sm:px-6 py-3"
+    >
       <div class="mx-auto max-w-[1200px] flex items-center justify-between">
         <slot name="header" />
       </div>

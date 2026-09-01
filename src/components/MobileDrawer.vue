@@ -45,17 +45,26 @@ function handleClose(): void {
     >
       <!-- Drawer Header -->
       <div class="flex items-center justify-between pb-4 mb-4 border-b border-charcoal/15">
-        <h2 class="text-subheading font-semibold text-cocoa-ink">
-          Categories
-        </h2>
+        <h2 class="text-subheading font-semibold text-cocoa-ink">Categories</h2>
         <button
           type="button"
           class="p-2 rounded-[8px] border border-charcoal/20 text-charcoal hover:bg-dew-drop transition-colors focus:outline-none"
           aria-label="Close navigation"
           @click="handleClose"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         </button>
       </div>

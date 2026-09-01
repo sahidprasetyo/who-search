@@ -20,11 +20,9 @@ const emit = defineEmits<{
 
 const searchStore = useSearchStore()
 
-const currentTitle = computed(
-  () => props.articleTitle ?? searchStore.selectedResult?.title ?? '',
-)
-const currentUrl = computed(
-  () => props.articleUrl !== undefined ? props.articleUrl : searchStore.selectedArticleUrl,
+const currentTitle = computed(() => props.articleTitle ?? searchStore.selectedResult?.title ?? '')
+const currentUrl = computed(() =>
+  props.articleUrl !== undefined ? props.articleUrl : searchStore.selectedArticleUrl,
 )
 
 const isIframeLoading = ref<boolean>(true)
@@ -51,10 +49,15 @@ function handleOpenExternal(): void {
   <SurfaceCard variant="canvas" padding="none">
     <!-- Header -->
     <template #header>
-      <div class="px-5 pt-3 pb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div
+        class="px-5 pt-3 pb-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+      >
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2">
-            <span class="inline-block w-2.5 h-2.5 rounded-full bg-sprout-sticker" aria-hidden="true" />
+            <span
+              class="inline-block w-2.5 h-2.5 rounded-full bg-sprout-sticker"
+              aria-hidden="true"
+            />
             <h3 class="text-subheading font-semibold text-cocoa-ink truncate">
               {{ currentTitle || 'Article Preview' }}
             </h3>
@@ -73,7 +76,13 @@ function handleOpenExternal(): void {
           >
             <span class="flex items-center gap-1.5">
               <span>Open in New Tab</span>
-              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <svg
+                class="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
@@ -92,7 +101,13 @@ function handleOpenExternal(): void {
       v-if="!currentUrl"
       class="h-96 flex flex-col items-center justify-center p-8 text-center text-charcoal/60"
     >
-      <svg class="w-12 h-12 mb-3 text-charcoal/30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <svg
+        class="w-12 h-12 mb-3 text-charcoal/30"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
@@ -108,7 +123,9 @@ function handleOpenExternal(): void {
     <!-- Active Iframe Container -->
     <div v-else class="relative w-full">
       <!-- Fallback Info Notice Banner (for iframe embedding edge cases) -->
-      <div class="px-4 py-2 bg-dew-drop/90 border-b border-charcoal/10 flex items-center justify-between text-caption text-charcoal/80">
+      <div
+        class="px-4 py-2 bg-dew-drop/90 border-b border-charcoal/10 flex items-center justify-between text-caption text-charcoal/80"
+      >
         <span class="flex items-center gap-1.5">
           <span class="text-marker-orange font-bold">Note:</span>
           If preview does not load due to site security headers, use "Open in New Tab".
@@ -130,8 +147,12 @@ function handleOpenExternal(): void {
         aria-busy="true"
         aria-live="polite"
       >
-        <div class="flex items-center gap-2 text-caption text-charcoal/70 bg-cream-paper px-4 py-2 rounded-full border border-charcoal/20 shadow-sm">
-          <span class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin" />
+        <div
+          class="flex items-center gap-2 text-caption text-charcoal/70 bg-cream-paper px-4 py-2 rounded-full border border-charcoal/20 shadow-sm"
+        >
+          <span
+            class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin"
+          />
           Loading article content...
         </div>
       </div>
