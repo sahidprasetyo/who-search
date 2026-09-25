@@ -9,7 +9,7 @@ withDefaults(defineProps<CategoryListSkeletonProps>(), {
 
 <template>
   <div
-    class="flex flex-col gap-3"
+    class="flex flex-col gap-5"
     aria-busy="true"
     aria-live="polite"
     role="status"
@@ -17,7 +17,7 @@ withDefaults(defineProps<CategoryListSkeletonProps>(), {
     <div
       v-for="i in count"
       :key="i"
-      class="rounded-cards border-2 border-charcoal bg-cream-paper dark:bg-surface-card shadow-lg overflow-hidden p-4"
+      class="rounded-cards border-2 border-charcoal bg-lilac-block shadow-card overflow-hidden px-6 py-5"
     >
       <div class="flex items-center justify-between">
         <BaseSkeleton class="h-6 w-32" rounded="inputs" />

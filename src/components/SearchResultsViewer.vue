@@ -71,34 +71,26 @@ function handleRetry(): void {
 
 <template>
   <SurfaceCard variant="canvas" padding="none">
-    <!-- Card Header -->
+    <!-- Card Header: mint block marks the results card -->
     <template #header>
       <div
-        class="px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 bg-cream-paper dark:bg-surface-card"
+        class="bg-mint-block px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-6"
       >
         <div class="min-w-0">
-          <div class="flex items-center gap-2">
-            <span
-              class="inline-block w-3 h-3 rounded-sm bg-marker-orange border border-charcoal shadow-[1px_1px_0px_0px_var(--color-charcoal)] shrink-0"
-              aria-hidden="true"
-            />
-            <h2 class="text-body sm:text-subheading font-black text-charcoal truncate">
-              {{ currentPersonName }}
-            </h2>
-          </div>
-          <p v-if="currentPersonTitle" class="text-caption font-medium text-charcoal/80 mt-0.5 truncate">
+          <h2 class="text-subheading sm:text-heading-sm font-black text-charcoal truncate">
+            {{ currentPersonName }}
+          </h2>
+          <p v-if="currentPersonTitle" class="text-caption text-charcoal/75 mt-1 truncate">
             {{ currentPersonTitle }}
           </p>
         </div>
 
-        <div class="flex items-center gap-2 shrink-0">
-          <span
-            v-if="!loading && activeResults.length > 0"
-            class="inline-flex items-center self-start sm:self-auto rounded-tags bg-dew-drop border-2 border-charcoal px-3 py-1 text-caption text-charcoal font-bold shadow-subtle"
-          >
-            {{ activeResults.length }} Results Found
-          </span>
-        </div>
+        <p
+          v-if="!loading && activeResults.length > 0"
+          class="shrink-0 text-caption text-charcoal/75 font-medium tabular-nums"
+        >
+          {{ activeResults.length }} {{ activeResults.length === 1 ? 'result' : 'results' }}
+        </p>
       </div>
     </template>
 
@@ -108,108 +100,67 @@ function handleRetry(): void {
     <!-- Error State -->
     <div
       v-else-if="errorMessage"
-      class="p-6 text-center flex flex-col items-center justify-center gap-3"
+      class="p-8 text-center flex flex-col items-center justify-center gap-6"
       role="alert"
     >
-      <p class="text-body-sm font-bold text-burnt-sienna border-2 border-burnt-sienna bg-burnt-sienna/10 p-3 rounded-inputs">
+      <p class="max-w-md text-body-sm leading-relaxed font-medium text-burnt-sienna">
         {{ errorMessage }}
       </p>
       <PillButton type="button" @click="handleRetry"> Try Again </PillButton>
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="activeResults.length === 0" class="p-8 text-center text-charcoal/70">
-      <p class="text-body-sm font-medium">No search results found for this person.</p>
+    <div v-else-if="activeResults.length === 0" class="p-10 text-center text-charcoal/70">
+      <p class="text-body-sm leading-relaxed">No search results found for this person.</p>
     </div>
 
-    <!-- Results Table / List (Single-axis scroll with overscroll-contain) -->
-    <div v-else class="max-h-[340px] sm:max-h-[380px] overflow-y-auto overscroll-contain">
-      <table class="w-full text-left text-body-sm border-collapse">
-        <thead
-          class="sticky top-0 bg-dew-drop z-10 border-b-2 border-charcoal text-caption uppercase text-charcoal font-black tracking-wider"
+    <!-- Results List: flat rows, hierarchy comes from type weight and tone -->
+    <ol
+      v-else
+      class="max-h-[440px] sm:max-h-[480px] overflow-y-auto overscroll-contain list-none m-0 p-4 sm:p-6 flex flex-col gap-4"
+    >
+      <li v-for="(result, index) in activeResults" :key="result.link || index">
+        <button
+          type="button"
+          class="group w-full flex gap-4 p-4 rounded-inputs text-left transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marker-orange"
+          :class="isResultSelected(result) ? 'bg-dew-drop' : 'hover:bg-charcoal/5'"
+          :aria-current="isResultSelected(result) ? 'true' : undefined"
+          @click="handleSelect(result)"
         >
-          <tr>
-            <th scope="col" class="py-2.5 px-3 sm:px-4 w-10 sm:w-12 text-center font-black">
-              No.
-            </th>
-            <th scope="col" class="py-2.5 px-3 sm:px-4 font-black">
-              Search Result
-            </th>
-            <th scope="col" class="py-2.5 px-4 hidden md:table-cell font-black">
-              Snippet
-            </th>
-            <th scope="col" class="py-2.5 px-3 sm:px-4 w-20 sm:w-28 text-right font-black">
-              Preview
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y-2 divide-charcoal/15">
-          <tr
-            v-for="(result, index) in activeResults"
-            :key="result.link || index"
-            class="group cursor-pointer transition-colors"
-            :class="[
-              isResultSelected(result)
-                ? 'bg-dew-drop font-semibold border-l-4 border-l-marker-orange'
-                : 'hover:bg-dew-drop/30 border-l-4 border-l-transparent',
-            ]"
-            @click="handleSelect(result)"
-          >
-            <!-- Index -->
-            <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-center text-caption text-charcoal font-bold align-top">
-              {{ result.position ?? index + 1 }}
-            </td>
+          <span class="w-6 shrink-0 pt-0.5 text-caption text-charcoal/50 font-medium tabular-nums">
+            {{ result.position ?? index + 1 }}
+          </span>
 
-            <!-- Result Title & Favicon/Domain -->
-            <td class="py-3.5 sm:py-3 px-3 sm:px-4 align-top">
-              <div class="flex flex-col gap-1 min-w-0">
-                <!-- Favicon & Source Domain -->
-                <div class="flex items-center gap-1.5 min-w-0">
-                  <img
-                    v-if="result.favicon"
-                    :src="result.favicon"
-                    alt=""
-                    class="w-3.5 h-3.5 rounded-sm object-contain shrink-0 border border-charcoal/40"
-                    loading="lazy"
-                    @error="($event.target as HTMLElement).style.display = 'none'"
-                  />
-                  <span class="text-xs text-charcoal/80 font-mono font-medium truncate">
-                    {{ result.source || result.displayed_link || formatDomain(result.link) }}
-                  </span>
-                </div>
-
-                <!-- Title -->
-                <div
-                  class="font-bold text-charcoal line-clamp-1 group-hover:text-marker-orange group-hover:underline transition-colors"
-                >
-                  {{ result.title }}
-                </div>
-              </div>
-            </td>
-
-            <!-- Snippet Preview -->
-            <td class="py-3.5 sm:py-3 px-4 hidden md:table-cell text-caption text-charcoal/80 align-top">
-              <div class="line-clamp-2 font-normal">
-                {{ stripHtmlTags(result.snippet) }}
-              </div>
-            </td>
-
-            <!-- Action -->
-            <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-right align-top">
-              <span
-                class="inline-flex items-center text-caption font-bold transition-all"
-                :class="[
-                  isResultSelected(result)
-                    ? 'text-marker-orange translate-x-0.5'
-                    : 'text-charcoal group-hover:text-marker-orange',
-                ]"
-              >
-                View &rarr;
+          <span class="flex-1 min-w-0 flex flex-col gap-1.5">
+            <span class="flex items-center gap-2 min-w-0">
+              <img
+                v-if="result.favicon"
+                :src="result.favicon"
+                alt=""
+                class="w-4 h-4 rounded-sm object-contain shrink-0"
+                loading="lazy"
+                @error="($event.target as HTMLElement).style.display = 'none'"
+              />
+              <span class="text-sm text-charcoal/65 truncate">
+                {{ result.source || result.displayed_link || formatDomain(result.link) }}
               </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+            </span>
+
+            <span
+              class="text-body-sm font-semibold leading-snug text-charcoal line-clamp-2 decoration-marker-orange decoration-2 underline-offset-4 group-hover:underline"
+            >
+              {{ result.title }}
+            </span>
+
+            <span
+              v-if="result.snippet"
+              class="max-w-[68ch] text-caption leading-relaxed text-charcoal/75 line-clamp-2"
+            >
+              {{ stripHtmlTags(result.snippet) }}
+            </span>
+          </span>
+        </button>
+      </li>
+    </ol>
   </SurfaceCard>
 </template>

@@ -28,13 +28,13 @@ function saveKey(key: string): void {
 <template>
   <button
     type="button"
-    class="min-h-[40px] sm:min-h-[44px] inline-flex items-center justify-center gap-1.5 px-3 rounded-buttons border-2 border-charcoal bg-cream-paper hover:bg-dew-drop text-caption font-bold text-charcoal shadow-subtle hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all duration-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-charcoal"
+    class="neo-control min-h-[40px] sm:min-h-[44px] inline-flex items-center justify-center gap-2 px-4 bg-surface-card hover:bg-dew-drop text-caption font-bold text-charcoal"
     :aria-label="hasKey ? 'SearchApi.io key saved, change key' : 'Add your SearchApi.io key'"
     @click="openDialog"
   >
     <span
-      class="w-2 h-2 rounded-full border border-charcoal"
-      :class="hasKey ? 'bg-sprout-sticker' : 'bg-transparent'"
+      class="w-2 h-2 rounded-full"
+      :class="hasKey ? 'bg-sprout-sticker' : 'bg-charcoal/25'"
       aria-hidden="true"
     />
     <span>API key</span>
@@ -42,19 +42,19 @@ function saveKey(key: string): void {
 
   <dialog
     ref="dialog"
-    class="m-auto w-[calc(100%-2rem)] max-w-md rounded-cards border-2 border-charcoal bg-cream-paper dark:bg-surface-card text-charcoal shadow-lg p-5 sm:p-6 backdrop:bg-black/50"
+    class="m-auto w-[calc(100%-2rem)] max-w-md rounded-cards border-2 border-charcoal bg-surface-card text-charcoal shadow-card p-6 sm:p-8 backdrop:bg-slate-950/50"
     aria-labelledby="api-key-title"
   >
-    <form method="dialog" class="flex flex-col gap-4" @submit.prevent="saveKey(keyInput)">
+    <form method="dialog" class="flex flex-col gap-6" @submit.prevent="saveKey(keyInput)">
       <div>
         <h2 id="api-key-title" class="text-heading-sm font-black">SearchApi.io key</h2>
-        <p class="mt-1 text-caption text-charcoal/80">
+        <p class="mt-2 text-caption leading-relaxed text-charcoal/80">
           Paste your own key from
           <a
             href="https://www.searchapi.io/"
             target="_blank"
             rel="noopener noreferrer"
-            class="underline font-bold"
+            class="font-semibold underline decoration-marker-orange decoration-2 underline-offset-4"
             >searchapi.io</a
           >
           for live results. It is stored only in this browser and sent only to SearchApi.io.
@@ -62,7 +62,7 @@ function saveKey(key: string): void {
         </p>
       </div>
 
-      <label class="flex flex-col gap-1.5 text-caption font-bold">
+      <label class="flex flex-col gap-2 text-caption font-semibold">
         <span>{{ hasKey ? 'Replace saved key' : 'API key' }}</span>
         <input
           v-model="keyInput"
@@ -71,29 +71,29 @@ function saveKey(key: string): void {
           spellcheck="false"
           maxlength="200"
           required
-          class="min-h-[44px] px-3 rounded-inputs border-2 border-charcoal bg-cream-paper text-charcoal font-mono focus:outline-none focus:ring-2 focus:ring-charcoal"
+          class="min-h-[44px] px-3 rounded-inputs border-2 border-charcoal bg-cream-paper text-charcoal font-mono shadow-control focus:outline-2 focus:outline-offset-3 focus:outline-marker-orange"
         />
       </label>
 
-      <div class="flex flex-wrap items-center justify-end gap-2">
+      <div class="flex flex-wrap items-center justify-end gap-3 pt-2">
         <button
           v-if="hasKey"
           type="button"
-          class="min-h-[44px] px-4 rounded-buttons border-2 border-charcoal text-caption font-bold text-burnt-sienna hover:bg-dew-drop cursor-pointer mr-auto"
+          class="neo-control min-h-[44px] px-4 bg-surface-card text-caption font-bold text-burnt-sienna hover:bg-dew-drop mr-auto"
           @click="saveKey('')"
         >
           Remove key
         </button>
         <button
           type="button"
-          class="min-h-[44px] px-4 rounded-buttons border-2 border-charcoal text-caption font-bold hover:bg-dew-drop cursor-pointer"
+          class="neo-control min-h-[44px] px-4 bg-surface-card text-caption font-bold hover:bg-dew-drop"
           @click="dialog?.close()"
         >
           Cancel
         </button>
         <button
           type="submit"
-          class="min-h-[44px] px-4 rounded-buttons border-2 border-charcoal bg-marker-orange text-white text-caption font-bold shadow-subtle active:shadow-none cursor-pointer"
+          class="neo-control min-h-[44px] px-5 bg-marker-orange text-on-accent text-caption font-bold"
         >
           Save
         </button>
