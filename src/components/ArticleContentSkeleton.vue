@@ -4,11 +4,11 @@ import BaseSkeleton from '@/components/BaseSkeleton.vue'
 
 <template>
   <div
-    class="w-full h-full p-5 sm:p-8 flex flex-col gap-6 bg-cream-paper dark:bg-surface-card overflow-hidden"
+    class="w-full h-full p-6 sm:p-8 flex flex-col gap-8 bg-surface-card overflow-hidden"
     aria-hidden="true"
   >
     <!-- Article Header Skeleton -->
-    <div class="flex flex-col gap-2 pb-4 border-b-2 border-charcoal/20">
+    <div class="flex flex-col gap-3 pb-6 border-b-2 border-charcoal/15">
       <BaseSkeleton class="h-7 sm:h-9 w-3/5" rounded="inputs" />
       <BaseSkeleton class="h-4 w-2/5" rounded="sm" />
     </div>
@@ -33,11 +33,11 @@ import BaseSkeleton from '@/components/BaseSkeleton.vue'
 
       <!-- Simulated Profile Infobox Card -->
       <div
-        class="hidden sm:flex flex-col gap-3 w-40 md:w-48 shrink-0 p-3.5 rounded-cards border-2 border-charcoal/25 bg-dew-drop/60 shadow-subtle"
+        class="hidden sm:flex flex-col gap-3 w-40 md:w-48 shrink-0 p-4 rounded-cards bg-charcoal/5"
       >
         <BaseSkeleton class="w-full h-32 rounded-cards" />
         <BaseSkeleton class="h-3 w-3/4 mx-auto" rounded="sm" />
-        <div class="flex flex-col gap-1.5 pt-2 border-t-2 border-charcoal/20">
+        <div class="flex flex-col gap-2 pt-3 border-t border-charcoal/15">
           <BaseSkeleton class="h-3 w-full" rounded="sm" />
           <BaseSkeleton class="h-3 w-4/5" rounded="sm" />
           <BaseSkeleton class="h-3 w-3/5" rounded="sm" />

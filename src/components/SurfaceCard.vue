@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<SurfaceCardProps>(), {
 })
 
 const variantClass = computed<string>(() => {
-  return props.variant === 'tint' ? 'bg-dew-drop' : 'bg-cream-paper dark:bg-surface-card'
+  return props.variant === 'tint' ? 'bg-dew-drop' : 'bg-surface-card'
 })
 
 const paddingClass = computed<string>(() => {
@@ -17,12 +17,12 @@ const paddingClass = computed<string>(() => {
     case 'none':
       return 'p-0'
     case 'sm':
-      return 'p-3 sm:p-4'
+      return 'p-4 sm:p-6'
     case 'lg':
-      return 'p-6 sm:p-8'
+      return 'p-8 sm:p-10'
     case 'md':
     default:
-      return 'p-4 sm:p-6'
+      return 'p-6 sm:p-8'
   }
 })
 </script>
@@ -30,13 +30,13 @@ const paddingClass = computed<string>(() => {
 <template>
   <component
     :is="as"
-    class="rounded-cards border-2 border-charcoal shadow-lg transition-colors overflow-hidden"
+    class="rounded-cards border-2 border-charcoal shadow-card transition-colors overflow-hidden"
     :class="[variantClass, paddingClass]"
   >
     <div
       v-if="$slots.header"
       class="border-b-2 border-charcoal"
-      :class="{ 'mb-3 pb-3': padding !== 'none' }"
+      :class="{ 'mb-6 pb-6': padding !== 'none' }"
     >
       <slot name="header" />
     </div>
@@ -44,7 +44,7 @@ const paddingClass = computed<string>(() => {
     <div
       v-if="$slots.footer"
       class="border-t-2 border-charcoal"
-      :class="{ 'mt-3 pt-3': padding !== 'none' }"
+      :class="{ 'mt-6 pt-6': padding !== 'none' }"
     >
       <slot name="footer" />
     </div>

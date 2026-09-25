@@ -27,7 +27,7 @@ describe('SearchResultsViewer', () => {
     },
   ]
 
-  it('renders search results table when results are provided', () => {
+  it('renders search results when results are provided', () => {
     const wrapper = mount(SearchResultsViewer, {
       props: {
         results: mockResults,
@@ -37,7 +37,7 @@ describe('SearchResultsViewer', () => {
     })
 
     expect(wrapper.text()).toContain('Albert Einstein')
-    expect(wrapper.text()).toContain('2 Results Found')
+    expect(wrapper.text()).toContain('2 results')
     expect(wrapper.text()).toContain('Einstein-Szilard letter')
     expect(wrapper.text()).toContain('Britannica')
   })
@@ -70,7 +70,7 @@ describe('SearchResultsViewer', () => {
     expect(wrapper.emitted('retry')).toBeTruthy()
   })
 
-  it('emits selectResult when clicking a table row', async () => {
+  it('emits selectResult when clicking a result', async () => {
     const wrapper = mount(SearchResultsViewer, {
       props: {
         results: mockResults,
@@ -78,7 +78,7 @@ describe('SearchResultsViewer', () => {
       },
     })
 
-    const rows = wrapper.findAll('tbody tr')
+    const rows = wrapper.findAll('li button')
     expect(rows).toHaveLength(2)
 
     await rows[1]?.trigger('click')

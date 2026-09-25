@@ -7,7 +7,7 @@ const { isDark, toggleTheme } = useTheme()
 <template>
   <button
     type="button"
-    class="min-h-[40px] min-w-[40px] sm:min-h-[44px] sm:min-w-[44px] inline-flex items-center justify-center rounded-buttons border-2 border-charcoal bg-cream-paper hover:bg-dew-drop text-charcoal shadow-subtle hover:-translate-x-0.5 hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all duration-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-charcoal"
+    class="neo-control min-h-[40px] min-w-[40px] sm:min-h-[44px] sm:min-w-[44px] inline-flex items-center justify-center bg-surface-card hover:bg-dew-drop text-charcoal"
     :aria-label="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
     :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
     @click="toggleTheme"
@@ -15,7 +15,7 @@ const { isDark, toggleTheme } = useTheme()
     <!-- Sun icon shown when Dark mode is active (click to switch to Light) -->
     <svg
       v-if="isDark"
-      class="w-20 h-20 text-marker-orange transition-transform duration-300 rotate-0 hover:rotate-45"
+      class="w-5 h-5 text-marker-orange"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
@@ -32,7 +32,7 @@ const { isDark, toggleTheme } = useTheme()
     <!-- Moon icon shown when Light mode is active (click to switch to Dark) -->
     <svg
       v-else
-      class="w-20 h-20 text-charcoal transition-transform duration-300 hover:-rotate-12"
+      class="w-5 h-5 text-charcoal"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"

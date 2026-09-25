@@ -51,7 +51,7 @@ describe('BaseSkeleton and Skeleton Primitives', () => {
 })
 
 describe('SearchResultsSkeleton Component', () => {
-  it('renders table layout skeleton with aria-busy and searching label', () => {
+  it('renders result list skeleton with aria-busy and searching label', () => {
     const wrapper = mount(SearchResultsSkeleton, {
       props: {
         rows: 5,
@@ -62,7 +62,7 @@ describe('SearchResultsSkeleton Component', () => {
     expect(wrapper.attributes('aria-live')).toBe('polite')
     expect(wrapper.text()).toContain('Searching...')
     // 5 rows in the body
-    const rows = wrapper.findAll('.divide-y > div')
+    const rows = wrapper.findAll('[data-testid="skeleton-row"]')
     expect(rows).toHaveLength(5)
   })
 })

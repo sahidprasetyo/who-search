@@ -2,87 +2,73 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Palette: no pure black or white anywhere. Ink is deep slate, paper is a soft
+ * neutral off-white, accents are ~13% desaturated from the original stickers.
+ * The dark block is duplicated so the OS preference applies before JS sets .dark.
+ */
 :root {
-  --color-cream-paper: #fffef5;
-  --color-charcoal: #000000;
-  --color-cocoa-ink: #000000;
-  --color-true-black: #000000;
-  --color-dew-drop: #fde68a;
-  --color-marker-orange: #ff5200;
-  --color-burnt-sienna: #dc2626;
-  --color-sky-sticker: #00d2ff;
-  --color-bubblegum-sticker: #ff2a85;
-  --color-sprout-sticker: #00e676;
-  --color-shadow-mist: #000000;
-  --color-surface-canvas: #fffef5;
-  --color-surface-card: #ffffff;
-  --color-surface-tint: #fde68a;
-  --color-surface-brand-band: #ff5200;
-  --shadow-lg: 4px 4px 0px 0px #000000;
-  --shadow-subtle: 2px 2px 0px 0px #000000;
+  --color-cream-paper: #f4f4f0;
+  --color-surface-card: #fafaf7;
+  --color-charcoal: #1e293b;
+  --color-shadow-mist: #0f172a;
+  --color-dew-drop: #f5e4a3;
+  --color-marker-orange: #ee6d2f;
+  --color-burnt-sienna: #c62e2e;
+  --color-sprout-sticker: #22c37b;
+  /* Pastel blocks: solid fills for card headers, one hue per card role */
+  --color-mint-block: #cdefdd;
+  --color-sky-block: #cfe8f3;
+  --color-lilac-block: #e0daf7;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-cream-paper: #121212;
-    --color-charcoal: #ffffff;
-    --color-cocoa-ink: #ffffff;
-    --color-true-black: #ffffff;
-    --color-dew-drop: #2a2510;
-    --color-marker-orange: #ff6e26;
-    --color-burnt-sienna: #f87171;
-    --color-sky-sticker: #38bdf8;
-    --color-bubblegum-sticker: #f472b6;
-    --color-sprout-sticker: #4ade80;
-    --color-shadow-mist: #ffffff;
-    --color-surface-canvas: #121212;
-    --color-surface-card: #1c1c1e;
-    --color-surface-tint: #2a2510;
-    --color-surface-brand-band: #ff6e26;
-    --shadow-lg: 4px 4px 0px 0px #ffffff;
-    --shadow-subtle: 2px 2px 0px 0px #ffffff;
+    --color-cream-paper: #141a24;
+    --color-surface-card: #1c2431;
+    --color-charcoal: #d8dee8;
+    --color-shadow-mist: #475569;
+    --color-dew-drop: #3a3218;
+    --color-marker-orange: #e8743c;
+    --color-burnt-sienna: #e27d7d;
+    --color-sprout-sticker: #5cc98a;
+    --color-mint-block: #1e3a30;
+    --color-sky-block: #1b3340;
+    --color-lilac-block: #2b2745;
   }
 }
 
 .dark {
-  --color-cream-paper: #121212;
-  --color-charcoal: #ffffff;
-  --color-cocoa-ink: #ffffff;
-  --color-true-black: #ffffff;
-  --color-dew-drop: #2a2510;
-  --color-marker-orange: #ff6e26;
-  --color-burnt-sienna: #f87171;
-  --color-sky-sticker: #38bdf8;
-  --color-bubblegum-sticker: #f472b6;
-  --color-sprout-sticker: #4ade80;
-  --color-shadow-mist: #ffffff;
-  --color-surface-canvas: #121212;
-  --color-surface-card: #1c1c1e;
-  --color-surface-tint: #2a2510;
-  --color-surface-brand-band: #ff6e26;
-  --shadow-lg: 4px 4px 0px 0px #ffffff;
-  --shadow-subtle: 2px 2px 0px 0px #ffffff;
+  --color-cream-paper: #141a24;
+  --color-surface-card: #1c2431;
+  --color-charcoal: #d8dee8;
+  --color-shadow-mist: #475569;
+  --color-dew-drop: #3a3218;
+  --color-marker-orange: #e8743c;
+  --color-burnt-sienna: #e27d7d;
+  --color-sprout-sticker: #5cc98a;
+  --color-mint-block: #1e3a30;
+  --color-sky-block: #1b3340;
+  --color-lilac-block: #2b2745;
 }
 
 @theme {
   /* Colors */
   --color-cream-paper: var(--color-cream-paper);
+  --color-surface-card: var(--color-surface-card);
   --color-charcoal: var(--color-charcoal);
-  --color-cocoa-ink: var(--color-cocoa-ink);
-  --color-true-black: var(--color-true-black);
+  --color-shadow-mist: var(--color-shadow-mist);
   --color-dew-drop: var(--color-dew-drop);
   --color-marker-orange: var(--color-marker-orange);
   --color-burnt-sienna: var(--color-burnt-sienna);
-  --color-sky-sticker: var(--color-sky-sticker);
-  --color-bubblegum-sticker: var(--color-bubblegum-sticker);
   --color-sprout-sticker: var(--color-sprout-sticker);
-  --color-shadow-mist: var(--color-shadow-mist);
-  --color-surface-card: var(--color-surface-card);
+  --color-mint-block: var(--color-mint-block);
+  --color-sky-block: var(--color-sky-block);
+  --color-lilac-block: var(--color-lilac-block);
+  /* Text on accent fills stays dark in both themes (4.7:1 on marker-orange) */
+  --color-on-accent: #0f172a;
 
   /* Typography */
-  --font-gelica:
-    'gelica', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    sans-serif;
   --font-geist:
     'Geist', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     sans-serif;
@@ -91,33 +77,19 @@
   --text-caption: 16px;
   --leading-caption: 1.5;
   --text-body-sm: 18px;
-  --leading-body-sm: 1.5;
+  --leading-body-sm: 1.55;
   --text-body: 20px;
   --leading-body: 1.5;
   --text-subheading: 24px;
-  --leading-subheading: 1.4;
+  --leading-subheading: 1.35;
   --text-heading-sm: 28px;
-  --leading-heading-sm: 1.4;
+  --leading-heading-sm: 1.3;
   --text-heading: 36px;
   --leading-heading: 1.2;
   --text-heading-lg: 46px;
   --leading-heading-lg: 1.2;
   --text-display: 104px;
   --leading-display: 1.08;
-
-  /* Spacing */
-  --spacing-4: 4px;
-  --spacing-8: 8px;
-  --spacing-12: 12px;
-  --spacing-16: 16px;
-  --spacing-20: 20px;
-  --spacing-24: 24px;
-  --spacing-28: 28px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-64: 64px;
-  --spacing-116: 116px;
 
   /* Border Radius */
   --radius-sm: 2px;
@@ -128,20 +100,50 @@
   --radius-full: 9999px;
 
   /* Named Radii */
-  --radius-tags: 2px;
-  --radius-cards: 4px;
+  --radius-tags: 4px;
+  --radius-cards: 6px;
   --radius-footer: 0px;
-  --radius-inputs: 2px;
-  --radius-buttons: 2px;
+  --radius-inputs: 4px;
+  --radius-buttons: 4px;
 
-  /* Shadows */
-  --shadow-lg: var(--shadow-lg);
-  --shadow-subtle: var(--shadow-subtle);
+  /* Hard shadows: static containers sit at 3px, controls at 4px, pressed at 1px */
+  --shadow-card: 3px 3px 0px 0px var(--color-shadow-mist);
+  --shadow-control: 4px 4px 0px 0px var(--color-shadow-mist);
+  --shadow-pressed: 1px 1px 0px 0px var(--color-shadow-mist);
+}
 
-  /* Surfaces */
-  --color-surface-canvas: var(--color-surface-canvas);
-  --color-surface-tint: var(--color-surface-tint);
-  --color-surface-brand-band: var(--color-surface-brand-band);
+/*
+ * Tactile control: 2px slate outline, 4px hard shadow, presses 2px into its shadow on hover
+ * and flattens on click. Background and text colors stay with the caller.
+ */
+@utility neo-control {
+  border: 2px solid var(--color-charcoal);
+  border-radius: var(--radius-buttons);
+  box-shadow: var(--shadow-control);
+  cursor: pointer;
+  transition:
+    transform 100ms ease-out,
+    box-shadow 100ms ease-out,
+    background-color 100ms ease-out;
+
+  &:hover {
+    transform: translate(2px, 2px);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  &:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px var(--color-shadow-mist);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-marker-orange);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 body {
@@ -150,5 +152,7 @@ body {
   font-family: var(--font-geist);
   margin: 0;
   min-height: 100vh;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
 }

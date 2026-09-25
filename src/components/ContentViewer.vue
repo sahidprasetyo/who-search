@@ -46,22 +46,13 @@ function handleOpenExternal(): void {
     <!-- Header -->
     <template #header>
       <div
-        class="px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 bg-cream-paper dark:bg-surface-card"
+        class="bg-sky-block px-6 sm:px-8 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
       >
         <div class="min-w-0 flex-1">
-          <div class="flex items-center gap-2">
-            <span
-              class="inline-block w-3 h-3 rounded-sm bg-sprout-sticker border border-charcoal shadow-[1px_1px_0px_0px_var(--color-charcoal)] shrink-0"
-              aria-hidden="true"
-            />
-            <h3 class="text-body sm:text-subheading font-black text-charcoal truncate">
-              {{ currentTitle || 'Article Preview' }}
-            </h3>
-          </div>
-          <p
-            v-if="currentUrl"
-            class="text-xs sm:text-caption text-charcoal/80 truncate mt-0.5 font-mono font-medium"
-          >
+          <h3 class="text-body sm:text-subheading font-black text-charcoal truncate">
+            {{ currentTitle || 'Article preview' }}
+          </h3>
+          <p v-if="currentUrl" class="text-sm text-charcoal/70 truncate mt-1">
             {{ currentUrl }}
           </p>
         </div>
@@ -98,11 +89,11 @@ function handleOpenExternal(): void {
     <!-- Empty State -->
     <div
       v-if="!currentUrl"
-      class="h-72 sm:h-84 md:h-96 flex flex-col items-center justify-center p-6 sm:p-8 text-center text-charcoal/70"
+      class="h-72 sm:h-84 md:h-96 flex flex-col items-center justify-center gap-6 p-8 text-center text-charcoal/70"
     >
-      <div class="p-4 border-2 border-charcoal bg-dew-drop shadow-subtle mb-4 rounded-inputs">
+      <div class="p-4 bg-charcoal/5 rounded-cards">
         <svg
-          class="w-12 h-12 text-charcoal"
+          class="w-10 h-10 text-charcoal/70"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -116,7 +107,7 @@ function handleOpenExternal(): void {
           />
         </svg>
       </div>
-      <p class="text-body-sm font-bold max-w-sm text-charcoal">
+      <p class="text-body-sm leading-relaxed font-medium max-w-sm text-charcoal/80">
         Select a search result from above to preview the article.
       </p>
     </div>
@@ -125,17 +116,14 @@ function handleOpenExternal(): void {
     <div v-else class="relative w-full overscroll-contain">
       <!-- Fallback Info Notice Banner (for iframe embedding edge cases) -->
       <div
-        class="px-4 sm:px-6 py-2.5 bg-dew-drop border-b-2 border-charcoal flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-caption text-charcoal font-medium"
+        class="px-6 sm:px-8 py-3 bg-charcoal/5 border-b border-charcoal/15 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6 text-sm leading-relaxed text-charcoal/80"
       >
-        <span class="flex items-center gap-1.5 text-xs sm:text-caption font-bold">
-          <span class="bg-marker-orange text-white px-1.5 py-0.5 rounded-sm text-xs font-black border border-charcoal">NOTE</span>
-          If preview does not load due to site security headers, use "Open in New Tab".
-        </span>
+        <span> If preview does not load due to site security headers, use "Open in New Tab". </span>
         <a
           :href="currentUrl"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-xs sm:text-caption font-bold text-marker-orange hover:underline shrink-0"
+          class="font-semibold text-charcoal underline decoration-marker-orange decoration-2 underline-offset-4 shrink-0"
         >
           Open direct link &rarr;
         </a>
@@ -144,17 +132,17 @@ function handleOpenExternal(): void {
       <!-- Iframe Loading Overlay with Article Skeleton Preview -->
       <div
         v-if="isIframeLoading"
-        class="absolute inset-0 top-10 bg-cream-paper z-10 flex flex-col justify-start overflow-hidden"
+        class="absolute inset-0 top-12 bg-surface-card z-10 flex flex-col justify-start overflow-hidden"
         aria-busy="true"
         aria-live="polite"
       >
         <!-- Floating loading pill -->
         <div class="absolute inset-x-0 top-6 flex justify-center z-20 pointer-events-none">
           <div
-            class="flex items-center gap-2 text-caption text-charcoal font-bold bg-dew-drop px-4 py-2 rounded-buttons border-2 border-charcoal shadow-subtle"
+            class="flex items-center gap-2 text-caption text-charcoal font-medium bg-dew-drop px-4 py-2 rounded-full"
           >
             <span
-              class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin shrink-0"
+              class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin motion-reduce:animate-none shrink-0"
               aria-hidden="true"
             />
             <span>Loading preview content...</span>
@@ -170,7 +158,7 @@ function handleOpenExternal(): void {
         :key="currentUrl"
         :src="currentUrl"
         :title="currentTitle ? `${currentTitle} Preview Page` : 'Web Page Preview'"
-        class="w-full h-[380px] sm:h-[460px] md:h-[540px] border-0 bg-white dark:bg-cream-paper"
+        class="w-full h-[380px] sm:h-[460px] md:h-[540px] border-0 bg-surface-card"
         sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
         loading="lazy"
         @load="handleIframeLoad"

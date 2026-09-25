@@ -30,14 +30,14 @@ function handleClose(): void {
     <!-- Backdrop Overlay -->
     <div
       v-if="activeIsOpen"
-      class="fixed inset-0 z-40 bg-charcoal/70 transition-opacity md:hidden"
+      class="fixed inset-0 z-40 bg-slate-950/50 transition-opacity md:hidden"
       aria-hidden="true"
       @click="handleClose"
     />
 
     <!-- Drawer Panel -->
     <div
-      class="fixed inset-y-0 left-0 z-50 w-[85vw] max-w-xs sm:max-w-sm bg-cream-paper border-r-2 sm:border-r-[3px] border-charcoal p-4 sm:p-5 shadow-lg flex flex-col transition-transform duration-300 ease-in-out md:hidden"
+      class="fixed inset-y-0 left-0 z-50 w-[85vw] max-w-xs sm:max-w-sm bg-cream-paper border-r-2 border-charcoal p-6 shadow-card flex flex-col transition-transform duration-300 ease-in-out md:hidden"
       :class="[
         activeIsOpen ? 'translate-x-0' : '-translate-x-full',
       ]"
@@ -46,11 +46,11 @@ function handleClose(): void {
       aria-label="Navigation drawer"
     >
       <!-- Drawer Header -->
-      <div class="flex items-center justify-between pb-3.5 mb-3.5 border-b-2 border-charcoal">
+      <div class="flex items-center justify-between pb-4 mb-6 border-b-2 border-charcoal">
         <h2 class="text-subheading font-black text-charcoal">Categories</h2>
         <button
           type="button"
-          class="min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2 rounded-inputs border-2 border-charcoal text-charcoal bg-cream-paper hover:bg-dew-drop shadow-subtle active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-charcoal"
+          class="neo-control min-h-[44px] min-w-[44px] inline-flex items-center justify-center p-2 text-charcoal bg-surface-card hover:bg-dew-drop"
           aria-label="Close navigation"
           @click="handleClose"
         >
@@ -72,7 +72,7 @@ function handleClose(): void {
       </div>
 
       <!-- Drawer Content Slot -->
-      <div class="flex-1 overflow-y-auto overscroll-contain pr-1">
+      <div class="flex-1 overflow-y-auto overscroll-contain pr-1 pb-2">
         <slot />
       </div>
     </div>
