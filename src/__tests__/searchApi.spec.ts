@@ -3,12 +3,12 @@ import {
   formatDomain,
   generateFallbackResults,
   getSearchApiKey,
-  searchDuckDuckGo,
+  querySearchApi,
   stripHtmlTags,
-} from '@/services/duckduckgoApi'
+} from '@/services/searchApi'
 import type { SearchApiResponse } from '@/types'
 
-describe('duckduckgoApi Service', () => {
+describe('searchApi Service', () => {
   const originalFetch = globalThis.fetch
 
   beforeEach(() => {
@@ -19,14 +19,14 @@ describe('duckduckgoApi Service', () => {
     globalThis.fetch = originalFetch
   })
 
-  describe('searchDuckDuckGo', () => {
+  describe('querySearchApi', () => {
     it('returns empty array when query is empty or whitespace', async () => {
-      const results = await searchDuckDuckGo('   ')
+      const results = await querySearchApi('   ')
       expect(results).toEqual([])
     })
 
     it('returns curated fallback results when no API key is provided', async () => {
-      const results = await searchDuckDuckGo('Albert Einstein', '')
+      const results = await querySearchApi('Albert Einstein', '')
       expect(results.length).toBeGreaterThan(0)
       expect(results[0]?.title).toContain('Albert Einstein')
       expect(results[0]?.link).toContain('https://www.britannica.com/biography/Albert_Einstein')
@@ -45,7 +45,7 @@ describe('duckduckgoApi Service', () => {
         organic_results: [
           {
             position: 1,
-            title: 'Albert Einstein - DuckDuckGo Result',
+            title: 'Albert Einstein - Search Result',
             link: 'https://www.britannica.com/biography/Albert-Einstein',
             snippet: 'Theoretical physicist who revolutionized modern physics.',
             displayed_link: 'https://www.britannica.com › biography › Albert-Einstein',
@@ -60,9 +60,9 @@ describe('duckduckgoApi Service', () => {
         json: async () => mockResponse,
       } as Response)
 
-      const results = await searchDuckDuckGo('Albert Einstein', 'valid_test_api_key')
+      const results = await querySearchApi('Albert Einstein', 'valid_test_api_key')
       expect(results).toHaveLength(1)
-      expect(results[0]?.title).toBe('Albert Einstein - DuckDuckGo Result')
+      expect(results[0]?.title).toBe('Albert Einstein - Search Result')
       expect(results[0]?.link).toBe('https://www.britannica.com/biography/Albert-Einstein')
       expect(results[0]?.source).toBe('Britannica')
 
@@ -78,7 +78,7 @@ describe('duckduckgoApi Service', () => {
         status: 401,
       } as Response)
 
-      await expect(searchDuckDuckGo('Test Query', 'invalid_key')).rejects.toThrow(
+      await expect(querySearchApi('Test Query', 'invalid_key')).rejects.toThrow(
         'Invalid or unauthorized SearchApi.io key',
       )
     })
@@ -89,7 +89,7 @@ describe('duckduckgoApi Service', () => {
         status: 500,
       } as Response)
 
-      await expect(searchDuckDuckGo('Test Query', 'any_key')).rejects.toThrow(
+      await expect(querySearchApi('Test Query', 'any_key')).rejects.toThrow(
         'SearchApi.io error: HTTP status 500',
       )
     })
@@ -102,7 +102,7 @@ describe('duckduckgoApi Service', () => {
         }),
       } as Response)
 
-      await expect(searchDuckDuckGo('Test Query', 'key')).rejects.toThrow(
+      await expect(querySearchApi('Test Query', 'key')).rejects.toThrow(
         'SearchApi.io error: Rate limit exceeded',
       )
     })
@@ -111,7 +111,7 @@ describe('duckduckgoApi Service', () => {
       const abortError = new DOMException('The operation was aborted', 'AbortError')
       globalThis.fetch = vi.fn<typeof fetch>().mockRejectedValue(abortError)
 
-      const results = await searchDuckDuckGo('Aborted Query', 'key')
+      const results = await querySearchApi('Aborted Query', 'key')
       expect(results).toEqual([])
     })
   })

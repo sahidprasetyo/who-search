@@ -65,9 +65,9 @@ export function generateFallbackResults(query: string): SearchResultItem[] {
 }
 
 /**
- * Executes a DuckDuckGo web search via SearchApi.io with query parameters and optional abort signal.
+ * Executes a web search via SearchApi.io (DuckDuckGo engine) with query parameters and optional abort signal.
  */
-export async function searchDuckDuckGo(
+export async function querySearchApi(
   query: string,
   apiKey?: string,
   signal?: AbortSignal,
@@ -113,6 +113,6 @@ export async function searchDuckDuckGo(
     if (err instanceof DOMException && err.name === 'AbortError') {
       return []
     }
-    throw err instanceof Error ? err : new Error('Failed to retrieve DuckDuckGo search results')
+    throw err instanceof Error ? err : new Error('Failed to retrieve SearchApi.io search results')
   }
 }

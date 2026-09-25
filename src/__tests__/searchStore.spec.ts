@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import * as duckduckgoApi from '@/services/duckduckgoApi'
+import * as searchApi from '@/services/searchApi'
 import { useSearchStore } from '@/stores/useSearchStore'
 import type { SearchResultItem } from '@/types'
 
@@ -24,7 +24,7 @@ describe('useSearchStore', () => {
     expect(store.selectedArticleUrl).toBeNull()
   })
 
-  it('fetches DuckDuckGo search results and selects first item by default', async () => {
+  it('fetches SearchApi.io search results and selects first item by default', async () => {
     const mockResults: SearchResultItem[] = [
       {
         position: 1,
@@ -43,7 +43,7 @@ describe('useSearchStore', () => {
       },
     ]
 
-    vi.spyOn(duckduckgoApi, 'searchDuckDuckGo').mockResolvedValue(mockResults)
+    vi.spyOn(searchApi, 'querySearchApi').mockResolvedValue(mockResults)
 
     const store = useSearchStore()
     await store.fetchResultsForPerson('Albert Einstein')
@@ -56,8 +56,8 @@ describe('useSearchStore', () => {
     expect(store.selectedArticleUrl).toBe('https://www.worldhistory.org/Albert_Einstein/')
   })
 
-  it('handles error during DuckDuckGo search', async () => {
-    vi.spyOn(duckduckgoApi, 'searchDuckDuckGo').mockRejectedValue(
+  it('handles error during SearchApi.io search', async () => {
+    vi.spyOn(searchApi, 'querySearchApi').mockRejectedValue(
       new Error('SearchApi.io network connection failed'),
     )
 
@@ -70,7 +70,7 @@ describe('useSearchStore', () => {
     expect(store.error).toBe('SearchApi.io network connection failed')
   })
 
-  it('allows manual selection of a specific DuckDuckGo result', () => {
+  it('allows manual selection of a specific search result', () => {
     const store = useSearchStore()
     const result: SearchResultItem = {
       position: 42,

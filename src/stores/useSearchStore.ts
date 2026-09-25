@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { searchDuckDuckGo } from '@/services/duckduckgoApi'
+import { querySearchApi } from '@/services/searchApi'
 import type { SearchResultItem } from '@/types'
 
 interface SearchState {
@@ -53,7 +53,7 @@ export const useSearchStore = defineStore('search', {
       this.currentSearchQuery = trimmedQuery
 
       try {
-        const searchResults = await searchDuckDuckGo(
+        const searchResults = await querySearchApi(
           trimmedQuery,
           undefined,
           activeAbortController.signal,
@@ -69,7 +69,7 @@ export const useSearchStore = defineStore('search', {
           return
         }
         this.error =
-          err instanceof Error ? err.message : 'Failed to retrieve DuckDuckGo search results'
+          err instanceof Error ? err.message : 'Failed to retrieve SearchApi.io search results'
         this.results = []
         this.selectedResult = null
       } finally {
