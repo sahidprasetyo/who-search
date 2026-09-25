@@ -74,19 +74,19 @@ function handleRetry(): void {
     <!-- Card Header -->
     <template #header>
       <div
-        class="px-4 sm:px-6 pt-3.5 pb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5"
+        class="px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 bg-cream-paper dark:bg-surface-card"
       >
         <div class="min-w-0">
           <div class="flex items-center gap-2">
             <span
-              class="inline-block w-2.5 h-2.5 rounded-full bg-marker-orange shrink-0"
+              class="inline-block w-3 h-3 rounded-sm bg-marker-orange border border-charcoal shadow-[1px_1px_0px_0px_var(--color-charcoal)] shrink-0"
               aria-hidden="true"
             />
-            <h2 class="text-body sm:text-subheading font-semibold text-cocoa-ink truncate">
+            <h2 class="text-body sm:text-subheading font-black text-charcoal truncate">
               {{ currentPersonName }}
             </h2>
           </div>
-          <p v-if="currentPersonTitle" class="text-caption text-charcoal/60 mt-0.5 truncate">
+          <p v-if="currentPersonTitle" class="text-caption font-medium text-charcoal/80 mt-0.5 truncate">
             {{ currentPersonTitle }}
           </p>
         </div>
@@ -94,7 +94,7 @@ function handleRetry(): void {
         <div class="flex items-center gap-2 shrink-0">
           <span
             v-if="!loading && activeResults.length > 0"
-            class="inline-flex items-center self-start sm:self-auto rounded-tags bg-dew-drop border border-charcoal/20 px-3 py-1 text-caption text-charcoal/80 font-medium"
+            class="inline-flex items-center self-start sm:self-auto rounded-tags bg-dew-drop border-2 border-charcoal px-3 py-1 text-caption text-charcoal font-bold shadow-subtle"
           >
             {{ activeResults.length }} Results Found
           </span>
@@ -111,52 +111,52 @@ function handleRetry(): void {
       class="p-6 text-center flex flex-col items-center justify-center gap-3"
       role="alert"
     >
-      <p class="text-body-sm font-medium text-burnt-sienna">
+      <p class="text-body-sm font-bold text-burnt-sienna border-2 border-burnt-sienna bg-burnt-sienna/10 p-3 rounded-inputs">
         {{ errorMessage }}
       </p>
       <PillButton type="button" @click="handleRetry"> Try Again </PillButton>
     </div>
 
     <!-- Empty State -->
-    <div v-else-if="activeResults.length === 0" class="p-8 text-center text-charcoal/60">
-      <p class="text-body-sm">No search results found on DuckDuckGo for this person.</p>
+    <div v-else-if="activeResults.length === 0" class="p-8 text-center text-charcoal/70">
+      <p class="text-body-sm font-medium">No search results found for this person.</p>
     </div>
 
     <!-- Results Table / List (Single-axis scroll with overscroll-contain) -->
     <div v-else class="max-h-[340px] sm:max-h-[380px] overflow-y-auto overscroll-contain">
       <table class="w-full text-left text-body-sm border-collapse">
         <thead
-          class="sticky top-0 bg-dew-drop/95 backdrop-blur-sm z-10 border-b border-charcoal/15 text-caption uppercase text-charcoal/70"
+          class="sticky top-0 bg-dew-drop z-10 border-b-2 border-charcoal text-caption uppercase text-charcoal font-black tracking-wider"
         >
           <tr>
-            <th scope="col" class="py-2.5 px-3 sm:px-4 w-10 sm:w-12 text-center font-medium">
+            <th scope="col" class="py-2.5 px-3 sm:px-4 w-10 sm:w-12 text-center font-black">
               No.
             </th>
-            <th scope="col" class="py-2.5 px-3 sm:px-4 font-medium">
-              DuckDuckGo Search Result
+            <th scope="col" class="py-2.5 px-3 sm:px-4 font-black">
+              Search Result
             </th>
-            <th scope="col" class="py-2.5 px-4 hidden md:table-cell font-medium">
+            <th scope="col" class="py-2.5 px-4 hidden md:table-cell font-black">
               Snippet
             </th>
-            <th scope="col" class="py-2.5 px-3 sm:px-4 w-20 sm:w-28 text-right font-medium">
+            <th scope="col" class="py-2.5 px-3 sm:px-4 w-20 sm:w-28 text-right font-black">
               Preview
             </th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-charcoal/10">
+        <tbody class="divide-y-2 divide-charcoal/15">
           <tr
             v-for="(result, index) in activeResults"
             :key="result.link || index"
             class="group cursor-pointer transition-colors"
             :class="[
               isResultSelected(result)
-                ? 'bg-dew-drop font-medium border-l-4 border-l-marker-orange'
-                : 'hover:bg-dew-drop/40 border-l-4 border-l-transparent',
+                ? 'bg-dew-drop font-semibold border-l-4 border-l-marker-orange'
+                : 'hover:bg-dew-drop/30 border-l-4 border-l-transparent',
             ]"
             @click="handleSelect(result)"
           >
             <!-- Index -->
-            <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-center text-caption text-charcoal/70 align-top">
+            <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-center text-caption text-charcoal font-bold align-top">
               {{ result.position ?? index + 1 }}
             </td>
 
@@ -169,18 +169,18 @@ function handleRetry(): void {
                     v-if="result.favicon"
                     :src="result.favicon"
                     alt=""
-                    class="w-3.5 h-3.5 rounded-sm object-contain shrink-0"
+                    class="w-3.5 h-3.5 rounded-sm object-contain shrink-0 border border-charcoal/40"
                     loading="lazy"
                     @error="($event.target as HTMLElement).style.display = 'none'"
                   />
-                  <span class="text-xs text-charcoal/60 font-mono truncate">
+                  <span class="text-xs text-charcoal/80 font-mono font-medium truncate">
                     {{ result.source || result.displayed_link || formatDomain(result.link) }}
                   </span>
                 </div>
 
                 <!-- Title -->
                 <div
-                  class="font-medium text-cocoa-ink line-clamp-1 group-hover:text-marker-orange transition-colors"
+                  class="font-bold text-charcoal line-clamp-1 group-hover:text-marker-orange group-hover:underline transition-colors"
                 >
                   {{ result.title }}
                 </div>
@@ -188,8 +188,8 @@ function handleRetry(): void {
             </td>
 
             <!-- Snippet Preview -->
-            <td class="py-3.5 sm:py-3 px-4 hidden md:table-cell text-caption text-charcoal/70 align-top">
-              <div class="line-clamp-2">
+            <td class="py-3.5 sm:py-3 px-4 hidden md:table-cell text-caption text-charcoal/80 align-top">
+              <div class="line-clamp-2 font-normal">
                 {{ stripHtmlTags(result.snippet) }}
               </div>
             </td>
@@ -197,11 +197,11 @@ function handleRetry(): void {
             <!-- Action -->
             <td class="py-3.5 sm:py-3 px-3 sm:px-4 text-right align-top">
               <span
-                class="inline-flex items-center text-caption transition-colors font-medium"
+                class="inline-flex items-center text-caption font-bold transition-all"
                 :class="[
                   isResultSelected(result)
-                    ? 'text-marker-orange font-semibold'
-                    : 'text-charcoal/60 group-hover:text-charcoal',
+                    ? 'text-marker-orange translate-x-0.5'
+                    : 'text-charcoal group-hover:text-marker-orange',
                 ]"
               >
                 View &rarr;

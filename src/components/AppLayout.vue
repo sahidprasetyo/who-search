@@ -6,7 +6,7 @@
   <div class="min-h-screen bg-cream-paper text-charcoal flex flex-col font-sans selection:bg-dew-drop selection:text-charcoal">
     <!-- Header Region -->
     <header
-      class="sticky top-0 z-30 border-b-[1.5px] border-charcoal bg-cream-paper/95 backdrop-blur-sm px-4 sm:px-6 lg:px-8 py-3.5"
+      class="sticky top-0 z-30 border-b-2 sm:border-b-[3px] border-charcoal bg-cream-paper shadow-subtle px-4 sm:px-6 lg:px-8 py-3.5"
     >
       <div class="mx-auto max-w-[1200px] flex items-center justify-between">
         <slot name="header" />

@@ -3,65 +3,65 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-cream-paper: #fdfbf9;
-  --color-charcoal: #171717;
-  --color-cocoa-ink: #2b1a07;
+  --color-cream-paper: #fffef5;
+  --color-charcoal: #000000;
+  --color-cocoa-ink: #000000;
   --color-true-black: #000000;
-  --color-dew-drop: #f7efe9;
-  --color-marker-orange: #ff6f1e;
-  --color-burnt-sienna: #ce500a;
-  --color-sky-sticker: #3b82f6;
-  --color-bubblegum-sticker: #ff66cf;
-  --color-sprout-sticker: #22c55e;
-  --color-shadow-mist: #bebcbb;
-  --color-surface-canvas: #fdfbf9;
-  --color-surface-card: #fdfbf9;
-  --color-surface-tint: #f7efe9;
-  --color-surface-brand-band: #ff6f1e;
-  --shadow-lg: 0px 2px 20px 0px rgba(0, 0, 0, 0.06);
-  --shadow-subtle: 0px 1px 2px 0px rgba(0, 0, 0, 0.25);
+  --color-dew-drop: #fde68a;
+  --color-marker-orange: #ff5200;
+  --color-burnt-sienna: #dc2626;
+  --color-sky-sticker: #00d2ff;
+  --color-bubblegum-sticker: #ff2a85;
+  --color-sprout-sticker: #00e676;
+  --color-shadow-mist: #000000;
+  --color-surface-canvas: #fffef5;
+  --color-surface-card: #ffffff;
+  --color-surface-tint: #fde68a;
+  --color-surface-brand-band: #ff5200;
+  --shadow-lg: 4px 4px 0px 0px #000000;
+  --shadow-subtle: 2px 2px 0px 0px #000000;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --color-cream-paper: #161514;
-    --color-charcoal: #e5dfd7;
-    --color-cocoa-ink: #f7f4ee;
+    --color-cream-paper: #121212;
+    --color-charcoal: #ffffff;
+    --color-cocoa-ink: #ffffff;
     --color-true-black: #ffffff;
-    --color-dew-drop: #282623;
-    --color-marker-orange: #ff8843;
-    --color-burnt-sienna: #f27246;
-    --color-sky-sticker: #60a5fa;
+    --color-dew-drop: #2a2510;
+    --color-marker-orange: #ff6e26;
+    --color-burnt-sienna: #f87171;
+    --color-sky-sticker: #38bdf8;
     --color-bubblegum-sticker: #f472b6;
     --color-sprout-sticker: #4ade80;
-    --color-shadow-mist: #0d0d0c;
-    --color-surface-canvas: #161514;
-    --color-surface-card: #1e1d1b;
-    --color-surface-tint: #282623;
-    --color-surface-brand-band: #ff6f1e;
-    --shadow-lg: 0px 4px 24px 0px rgba(0, 0, 0, 0.45);
-    --shadow-subtle: 0px 1px 3px 0px rgba(0, 0, 0, 0.6);
+    --color-shadow-mist: #ffffff;
+    --color-surface-canvas: #121212;
+    --color-surface-card: #1c1c1e;
+    --color-surface-tint: #2a2510;
+    --color-surface-brand-band: #ff6e26;
+    --shadow-lg: 4px 4px 0px 0px #ffffff;
+    --shadow-subtle: 2px 2px 0px 0px #ffffff;
   }
 }
 
 .dark {
-  --color-cream-paper: #161514;
-  --color-charcoal: #e5dfd7;
-  --color-cocoa-ink: #f7f4ee;
+  --color-cream-paper: #121212;
+  --color-charcoal: #ffffff;
+  --color-cocoa-ink: #ffffff;
   --color-true-black: #ffffff;
-  --color-dew-drop: #282623;
-  --color-marker-orange: #ff8843;
-  --color-burnt-sienna: #f27246;
-  --color-sky-sticker: #60a5fa;
+  --color-dew-drop: #2a2510;
+  --color-marker-orange: #ff6e26;
+  --color-burnt-sienna: #f87171;
+  --color-sky-sticker: #38bdf8;
   --color-bubblegum-sticker: #f472b6;
   --color-sprout-sticker: #4ade80;
-  --color-shadow-mist: #0d0d0c;
-  --color-surface-canvas: #161514;
-  --color-surface-card: #1e1d1b;
-  --color-surface-tint: #282623;
-  --color-surface-brand-band: #ff6f1e;
-  --shadow-lg: 0px 4px 24px 0px rgba(0, 0, 0, 0.45);
-  --shadow-subtle: 0px 1px 3px 0px rgba(0, 0, 0, 0.6);
+  --color-shadow-mist: #ffffff;
+  --color-surface-canvas: #121212;
+  --color-surface-card: #1c1c1e;
+  --color-surface-tint: #2a2510;
+  --color-surface-brand-band: #ff6e26;
+  --shadow-lg: 4px 4px 0px 0px #ffffff;
+  --shadow-subtle: 2px 2px 0px 0px #ffffff;
 }
 
 @theme {
@@ -121,18 +121,18 @@
 
   /* Border Radius */
   --radius-sm: 2px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
-  --radius-2xl-2: 20px;
-  --radius-full: 56px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+  --radius-2xl-2: 4px;
+  --radius-full: 9999px;
 
   /* Named Radii */
-  --radius-tags: 20px;
-  --radius-cards: 12px;
-  --radius-footer: 56px;
-  --radius-inputs: 8px;
-  --radius-buttons: 20px;
+  --radius-tags: 2px;
+  --radius-cards: 4px;
+  --radius-footer: 0px;
+  --radius-inputs: 2px;
+  --radius-buttons: 2px;
 
   /* Shadows */
   --shadow-lg: var(--shadow-lg);

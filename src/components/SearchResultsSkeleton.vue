@@ -23,16 +23,16 @@ const snippetWidths = ['w-full', 'w-11/12', 'w-5/6', 'w-4/5']
         class="inline-block w-4 h-4 rounded-full border-2 border-charcoal border-t-transparent animate-spin shrink-0"
         aria-hidden="true"
       />
-      <span class="font-medium">Searching DuckDuckGo...</span>
+      <span class="font-medium">Searching...</span>
     </div>
 
     <!-- Table / List Geometry Skeleton -->
     <div
-      class="border border-charcoal/10 rounded-cards overflow-hidden bg-cream-paper/60 dark:bg-surface-card/60"
+      class="border-2 border-charcoal rounded-cards overflow-hidden bg-cream-paper/60 dark:bg-surface-card/60 shadow-subtle"
     >
       <!-- Header Skeleton -->
       <div
-        class="bg-dew-drop/90 border-b border-charcoal/15 py-2.5 px-3 sm:px-4 flex items-center justify-between gap-3"
+        class="bg-dew-drop border-b-2 border-charcoal py-2.5 px-3 sm:px-4 flex items-center justify-between gap-3"
       >
         <div class="w-10 sm:w-12 flex justify-center">
           <BaseSkeleton class="w-5 h-3.5" rounded="sm" />
@@ -48,7 +48,7 @@ const snippetWidths = ['w-full', 'w-11/12', 'w-5/6', 'w-4/5']
         </div>
       </div>
 
-      <!-- Row Skeletons mirroring DuckDuckGo organic result geometry -->
+      <!-- Row Skeletons mirroring SearchApi.io organic result geometry -->
       <div class="divide-y divide-charcoal/10">
         <div
           v-for="index in rows"

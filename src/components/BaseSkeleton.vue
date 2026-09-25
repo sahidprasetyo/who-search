@@ -36,7 +36,7 @@ const roundedClass = computed(() => {
 <template>
   <component
     :is="as"
-    class="animate-pulse bg-dew-drop/90 border border-charcoal/5 transition-opacity"
+    class="animate-pulse bg-charcoal/10 dark:bg-charcoal/20 border border-charcoal/20 transition-opacity"
     :class="[roundedClass, props.class]"
     :style="{
       width: width,

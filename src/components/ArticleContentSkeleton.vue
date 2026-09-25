@@ -8,7 +8,7 @@ import BaseSkeleton from '@/components/BaseSkeleton.vue'
     aria-hidden="true"
   >
     <!-- Article Header Skeleton -->
-    <div class="flex flex-col gap-2 pb-4 border-b border-charcoal/10">
+    <div class="flex flex-col gap-2 pb-4 border-b-2 border-charcoal/20">
       <BaseSkeleton class="h-7 sm:h-9 w-3/5" rounded="inputs" />
       <BaseSkeleton class="h-4 w-2/5" rounded="sm" />
     </div>
@@ -33,11 +33,11 @@ import BaseSkeleton from '@/components/BaseSkeleton.vue'
 
       <!-- Simulated Profile Infobox Card -->
       <div
-        class="hidden sm:flex flex-col gap-3 w-40 md:w-48 shrink-0 p-3.5 rounded-cards border border-charcoal/10 bg-dew-drop/50"
+        class="hidden sm:flex flex-col gap-3 w-40 md:w-48 shrink-0 p-3.5 rounded-cards border-2 border-charcoal/25 bg-dew-drop/60 shadow-subtle"
       >
         <BaseSkeleton class="w-full h-32 rounded-cards" />
         <BaseSkeleton class="h-3 w-3/4 mx-auto" rounded="sm" />
-        <div class="flex flex-col gap-1.5 pt-2 border-t border-charcoal/10">
+        <div class="flex flex-col gap-1.5 pt-2 border-t-2 border-charcoal/20">
           <BaseSkeleton class="h-3 w-full" rounded="sm" />
           <BaseSkeleton class="h-3 w-4/5" rounded="sm" />
           <BaseSkeleton class="h-3 w-3/5" rounded="sm" />

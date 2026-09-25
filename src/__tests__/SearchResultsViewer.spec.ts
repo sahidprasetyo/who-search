@@ -50,7 +50,7 @@ describe('SearchResultsViewer', () => {
       },
     })
 
-    expect(wrapper.text()).toContain('Searching DuckDuckGo...')
+    expect(wrapper.text()).toContain('Searching...')
     expect(wrapper.find('[aria-busy="true"]').exists()).toBe(true)
   })
 

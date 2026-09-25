@@ -30,14 +30,22 @@ const paddingClass = computed<string>(() => {
 <template>
   <component
     :is="as"
-    class="rounded-cards border-[1.5px] border-charcoal/20 shadow-lg transition-colors overflow-hidden"
+    class="rounded-cards border-2 border-charcoal shadow-lg transition-colors overflow-hidden"
     :class="[variantClass, paddingClass]"
   >
-    <div v-if="$slots.header" class="mb-3 border-b border-charcoal/10 pb-3">
+    <div
+      v-if="$slots.header"
+      class="border-b-2 border-charcoal"
+      :class="{ 'mb-3 pb-3': padding !== 'none' }"
+    >
       <slot name="header" />
     </div>
     <slot />
-    <div v-if="$slots.footer" class="mt-3 border-t border-charcoal/10 pt-3">
+    <div
+      v-if="$slots.footer"
+      class="border-t-2 border-charcoal"
+      :class="{ 'mt-3 pt-3': padding !== 'none' }"
+    >
       <slot name="footer" />
     </div>
   </component>
