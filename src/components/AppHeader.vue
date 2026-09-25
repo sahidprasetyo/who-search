@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import ApiKeyButton from '@/components/ApiKeyButton.vue'
 import PillButton from '@/components/PillButton.vue'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useNavigationStore } from '@/stores/useNavigationStore'
@@ -70,6 +71,7 @@ function handleToggle(): void {
 
     <!-- Right Actions: Theme Toggle & Docs CTA -->
     <div class="flex items-center gap-2 shrink-0">
+      <ApiKeyButton />
       <ThemeToggle />
       <PillButton href="https://github.com" target="_blank" rel="noopener noreferrer">
         <span class="flex items-center gap-1.5 font-bold">

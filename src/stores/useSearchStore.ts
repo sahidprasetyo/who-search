@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { querySearchApi } from '@/services/searchApi'
+import { getSearchApiKey, querySearchApi } from '@/services/searchApi'
 import type { SearchResultItem } from '@/types'
 
 interface SearchState {
@@ -61,9 +61,7 @@ export const useSearchStore = defineStore('search', {
         this.results = searchResults
         // Default to the first search result if available
         this.selectedResult = searchResults[0] ?? null
-        this.isFallback =
-          !import.meta.env?.VITE_SEARCHAPI_KEY ||
-          import.meta.env.VITE_SEARCHAPI_KEY === 'your_searchapi_key_here'
+        this.isFallback = !getSearchApiKey()
       } catch (err: unknown) {
         if (err instanceof DOMException && err.name === 'AbortError') {
           return

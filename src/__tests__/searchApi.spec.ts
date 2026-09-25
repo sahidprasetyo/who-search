@@ -4,6 +4,7 @@ import {
   generateFallbackResults,
   getSearchApiKey,
   querySearchApi,
+  setSearchApiKey,
   stripHtmlTags,
 } from '@/services/searchApi'
 import type { SearchApiResponse } from '@/types'
@@ -138,9 +139,39 @@ describe('searchApi Service', () => {
     })
   })
 
-  describe('getSearchApiKey', () => {
-    it('returns empty string when no environment key is configured', () => {
-      expect(typeof getSearchApiKey()).toBe('string')
+  describe('getSearchApiKey / setSearchApiKey', () => {
+    afterEach(() => {
+      localStorage.clear()
+    })
+
+    it('saves a trimmed key in browser storage and returns it', () => {
+      setSearchApiKey('  visitor_key  ')
+      expect(getSearchApiKey()).toBe('visitor_key')
+    })
+
+    it('removes the stored key when saved empty', () => {
+      setSearchApiKey('visitor_key')
+      setSearchApiKey('   ')
+      expect(localStorage.getItem('who-search:searchapi-key')).toBeNull()
+    })
+
+    it('treats the placeholder key as no key', () => {
+      setSearchApiKey('your_searchapi_key_here')
+      expect(getSearchApiKey()).toBe('')
+    })
+
+    it('uses the stored key when querySearchApi gets no explicit key', async () => {
+      setSearchApiKey('visitor_key')
+      globalThis.fetch = vi.fn<typeof fetch>().mockResolvedValue({
+        ok: true,
+        json: async () => ({ organic_results: [] }),
+      } as unknown as Response)
+
+      await querySearchApi('Marie Curie')
+      expect(globalThis.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('api_key=visitor_key'),
+        expect.any(Object),
+      )
     })
   })
 
