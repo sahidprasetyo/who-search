@@ -27,13 +27,13 @@ A frontend-only Vue 3 app for exploring famous personalities. Pick a person from
 
 - [Bun](https://bun.sh/) (used for install and scripts; `bun.lock` is committed)
 - Node.js `^22.18.0 || >=24.12.0` (required by Vite and tooling)
-- Optional: a SearchApi.io API key for live results
+- Optional: a SearchApi.io API key for live results (paste it into the app's **API key** button)
 
 ## Getting Started
 
 ```sh
 bun install
-cp .env.example .env   # then set VITE_SEARCHAPI_KEY, or leave it to use fallback mode
+cp .env.example .env   # optional: set VITE_SEARCHAPI_KEY for local dev, or paste a key in the app
 bun dev
 ```
 
@@ -41,14 +41,22 @@ bun dev
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `VITE_SEARCHAPI_KEY` | No | SearchApi.io key. If unset or left as `your_searchapi_key_here`, curated fallback results are shown instead of live search. |
+| `VITE_SEARCHAPI_KEY` | No | **Dev server only** (`bun dev`); production builds ignore it. A key saved via the in-app **API key** button takes precedence. If no key is set, curated fallback results are shown. |
 
 ## Security Considerations
 
-- **The API key is public in any build.** Vite inlines every `VITE_*` variable into the client bundle, and the key is sent as a query parameter to SearchApi.io. Anyone who loads a deployed build can read it. That's fine for local development. Before a public deployment, route searches through a small server-side proxy (e.g. a serverless function) that holds the key in a secret manager and calls SearchApi.io on the client's behalf.
+- **No API key ships in the deployed site.** GitHub Pages is static hosting, so any key baked into the build would be readable by every visitor. Instead, each visitor pastes their own SearchApi.io key via the **API key** button. It is stored in that browser's `localStorage` and sent only to SearchApi.io. `VITE_SEARCHAPI_KEY` is read only when `import.meta.env.DEV` is true, so `vite build` drops it even if it is set. Don't add it as a GitHub Actions secret or variable.
+- **Shared origin on github.io.** Every project under `sahidprasetyo.github.io/*` shares one origin, and therefore one `localStorage`. Only host trusted pages there, or remove your key (**API key → Remove key**) on shared devices.
+- **Live search for all visitors needs a server.** To serve live results with your own key, put a server-side proxy in front of SearchApi.io that keeps the key in a secret store.
 - **Never commit `.env`.** `.gitignore` excludes `.env` and `.env.*`; only `.env.example` (placeholder values) is tracked.
 - **Embedded pages are sandboxed.** The content viewer uses `sandbox="allow-same-origin allow-scripts allow-popups allow-forms"`. Previewed pages are third-party and cross-origin; they cannot access this app's DOM or storage.
 - **No silent failures.** `401`/`403` responses surface as an invalid-key error in the UI; other HTTP and API errors are shown in the results pane rather than swallowed.
+
+## Deployment (GitHub Pages)
+
+`.github/workflows/deploy.yml` type-checks, tests, builds with `--base=/who-search/`, and deploys to `https://sahidprasetyo.github.io/who-search/` on every push to `main`.
+
+**One-time setup:** in **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. You don't need any secrets or variables.
 
 ## Scripts
 
@@ -67,7 +75,7 @@ bun dev
 ```
 src/
 ├── App.vue            # Wires the layout slots: header, navigation, results, viewer, drawer
-├── components/        # UI components (AppLayout, CategoryAccordion, SearchResultsViewer, ContentViewer, skeletons, …)
+├── components/        # UI components (AppLayout, ApiKeyButton, CategoryAccordion, SearchResultsViewer, ContentViewer, skeletons, …)
 ├── composables/       # usePersonalitiesApp (orchestration), useIframePreview, useTheme
 ├── data/              # personalities.ts, the category / person dataset
 ├── services/          # searchApi.ts, the SearchApi.io client and fallback results

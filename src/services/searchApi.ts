@@ -1,20 +1,35 @@
 import type { SearchApiResponse, SearchResultItem } from '@/types'
 import { buildUrlWithParams, formatDomain } from '@/utils/url-helpers'
 import { stripHtmlTags } from '@/utils/formatters'
+import { getStorageItem, removeStorageItem, setStorageItem } from '@/utils/storage'
 
 // Re-export pure helpers for convenience and backward compatibility
 export { formatDomain, stripHtmlTags }
 
 const SEARCHAPI_ENDPOINT = 'https://www.searchapi.io/api/v1/search'
+const SEARCHAPI_KEY_STORAGE_KEY = 'who-search:searchapi-key'
+const PLACEHOLDER_KEY = 'your_searchapi_key_here'
 
 /**
- * Retrieves the SearchApi.io API key from environment configuration if available.
+ * Retrieves the visitor's SearchApi.io key from this browser's storage.
+ * `VITE_SEARCHAPI_KEY` is honoured in dev only, so a production build never inlines a key.
  */
 export function getSearchApiKey(): string {
-  if (typeof import.meta !== 'undefined' && import.meta.env?.VITE_SEARCHAPI_KEY) {
-    return import.meta.env.VITE_SEARCHAPI_KEY
+  const storedKey = getStorageItem<string>(SEARCHAPI_KEY_STORAGE_KEY, '')
+  const key = storedKey || (import.meta.env.DEV ? (import.meta.env.VITE_SEARCHAPI_KEY ?? '') : '')
+  return key === PLACEHOLDER_KEY ? '' : key
+}
+
+/**
+ * Saves the visitor's own SearchApi.io key in this browser; an empty value removes it.
+ */
+export function setSearchApiKey(key: string): void {
+  const trimmedKey = key.trim()
+  if (trimmedKey) {
+    setStorageItem(SEARCHAPI_KEY_STORAGE_KEY, trimmedKey)
+  } else {
+    removeStorageItem(SEARCHAPI_KEY_STORAGE_KEY)
   }
-  return ''
 }
 
 /**
@@ -80,7 +95,7 @@ export async function querySearchApi(
   const resolvedApiKey = apiKey ?? getSearchApiKey()
 
   // If no API key is provided or dummy placeholder is used, gracefully return curated fallback results
-  if (!resolvedApiKey || resolvedApiKey === 'your_searchapi_key_here') {
+  if (!resolvedApiKey || resolvedApiKey === PLACEHOLDER_KEY) {
     return generateFallbackResults(trimmedQuery)
   }
 
@@ -96,7 +111,7 @@ export async function querySearchApi(
     if (!response.ok) {
       if (response.status === 401 || response.status === 403) {
         throw new Error(
-          'Invalid or unauthorized SearchApi.io key. Please check your VITE_SEARCHAPI_KEY in .env.',
+          'Invalid or unauthorized SearchApi.io key. Please check the key saved under "API key".',
         )
       }
       throw new Error(`SearchApi.io error: HTTP status ${response.status}`)
